@@ -1,0 +1,23 @@
+0.0.0.0.1
+最初版
+
+0.1.0.0.1
+test.php修正加上QQ註解
+
+0.2.0.0.1
+修改cart.php內碼基本入場費設定
+
+0.3.0.0.1
+修改下訂單後，加入設施排程中連接結帳單導向
+
+0.4.0.1.1
+修改登入頁面UI，CSS修正，新增幾張UI原件
+
+0.5.0.2.1
+修改登入button頁面首頁UI，CSS修正，新增幾張UI原件
+
+0.6.1.3.1
+login.php加入FB login API與註冊欄位，index.html改成index.php，CSS修正
+
+0.7.1.3.2
+paydatesetting.php重新導向修正，註冊流程導入login.php，checkout.php加入JS的場勘日期，email判斷，checkoptionmain.php小修正，bill.php網址修正

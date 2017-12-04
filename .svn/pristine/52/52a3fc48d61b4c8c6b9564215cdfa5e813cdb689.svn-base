@@ -1,0 +1,298 @@
+﻿<?php 
+header("Content-Type: text/html; charset=utf-8");
+require_once("ConneMysql.php");
+include("wfcartqq.php");
+include("wfcartqq2.php");
+session_start();
+
+if(!isset($_SESSION["loginMember"]) || ($_SESSION["loginMember"]=="")){
+	header("Location: index.php");
+}
+
+//繫結登入會員資料
+$query_RecMember = "SELECT * FROM `member` WHERE `Mem_email`='".$_SESSION["loginMember"]."'";
+$RecMember = mysql_query($query_RecMember);	
+$row_RecMember = mysql_fetch_assoc($RecMember);
+
+
+//繫結訂單資料
+$query_RecBill = "SELECT * FROM `bill` WHERE `Bill_id` = ".$_SESSION["billid"];
+$RecBill = mysql_query($query_RecBill);
+$row_RecBill = mysql_fetch_assoc($RecBill);
+
+//繫結場地資料
+$query_RecPlace = "SELECT * FROM `place` WHERE `Pla_id`=".$row_RecBill["Pla_id"];
+$RecPlace = mysql_query($query_RecPlace);
+$row_RecPlace=mysql_fetch_assoc($RecPlace);
+
+//繫結訂單細節
+$query_RecBillde = "SELECT * FROM `billdetail` WHERE `Bill_id` = ".$row_RecBill["Bill_id"];
+$RecBillde = mysql_query($query_RecBillde);
+$row_RecBillde = mysql_fetch_assoc($RecBillde);
+
+sscanf($row_RecBillde["Act_start"], "%d-%d-%d %d:%d:%d", $y, $m, $d, $h, $i, $s);
+$timestamp1 = mktime($h, $i, $s, $m, $d, $y);
+sscanf($row_RecBillde["Act_end"], "%d-%d-%d %d:%d:%d", $y, $m, $d, $h, $i, $s);
+$timestamp2 = mktime($h, $i, $s, $m, $d, $y);
+
+if($row_RecBill["CheckYN"]=='1'){
+	header("Location: bill.php?id=".$_SESSION["billid"]);
+}
+
+if($row_RecBill["Mem_id"] != $row_RecMember["Mem_id"]){
+	header("Location: member_center.php");
+}
+
+//購物車開始
+$cartt =& $_SESSION['cartt'];
+$cart =& $_SESSION['cartqq']; // 將購物車的值設定為 Session
+if(!is_object($cart)) $cart = new wfCart();
+$cartt =& $_SESSION['cartt']; // 將購物車的值設定為 Session
+if(!is_object($cartt)) $cartt = new wfcartt();
+//購物車結束
+//---
+
+
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Funnewplay//fun新玩 ─ 結帳確認</title>
+<link href="stylecart.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" language="JavaScript">// <![CDATA[
+function varitext(text){
+        text=document
+        print(text)
+    }
+ 
+    $(document).ready(function() {
+        $('#print').click(function(){
+            varitext();
+        })
+    });
+// ]]></script>
+</head>
+<body>
+<table width="780" border="0" align="center" cellpadding="4" cellspacing="0" bgcolor="#FFFFFF">
+  <tr>
+    <td>
+    <a href="../phpmember/index.php"><img src="images/logo1.jpg" alt="場地資訊" width="301" height="168">
+	</td>
+  </tr>
+  <tr>
+    <td class="tdbline"><table width="100%" border="0" cellspacing="0" cellpadding="10">
+        <tr valign="top">
+          <td>
+            
+            <div class="normalDiv">
+              
+              <p class="heading"><img src="images/16-cube-orange.png" width="16" height="16" align="absmiddle">結帳單內容</p>
+			  
+			  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+              <tr>
+                <th width="117" bgcolor="#ECE1E1"><p>編號</p></th>
+                <th width="171" bgcolor="#ECE1E1"><p>場地</p></th>
+				<th width="201" bgcolor="#ECE1E1"><p>下單日期</p></th>
+				<th colspan="2" bgcolor="#ECE1E1"><p>場勘日期</p></th>
+				</tr>
+			  
+			  <tr>
+				<td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Bill_id"];?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecPlace["Pla_name"];?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Bill_date"];?></p></td>
+                <td colspan="2" align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Bill_sdate"];?></p></td>
+                </tr>
+			  
+			  <tr>
+				<th bgcolor="#ECE1E1"><p>客戶名稱</p></th>
+                <th bgcolor="#ECE1E1"><p>客戶聯絡人</p></th>
+				<th bgcolor="#ECE1E1"><p>聯絡人Email</p></th>
+				<th width="124" bgcolor="#ECE1E1"><p>聯絡電話(主要)</p></th>
+				<th width="101" bgcolor="#ECE1E1"><p>聯絡電話(備用)</p></th>
+			  </tr>
+        
+              <tr>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Cl_name"];?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Cl_charge"];?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Cl_email"];?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Cl_tel"];?></p></td>    
+				<td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Cl_cel"];?></p></td>  	
+			  </tr>
+			  
+			  <tr>
+				<th bgcolor="#ECE1E1" colspan="3"><p>活動日期</p></th>               
+				<th bgcolor="#ECE1E1"><p>活動天數</p></th>
+				<th bgcolor="#ECE1E1"><p>預定人數</p></th>
+			  </tr>
+			  
+			  <tr>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline" colspan="3"><p><?php echo (date("Y-m-d",$timestamp1));?> ~ <?php echo (date("Y-m-d",$timestamp2));?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBillde["Act_daycount"];?>天</p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBillde["Act_reservepeople"];?>人</p></td>                     	
+			  </tr>
+			  
+			  <tr>
+				<th bgcolor="#ECE1E1" colspan="5"><p>訂單價格</p></th>
+				</tr>
+				
+			  <tr>
+                <td valign="baseline" bgcolor="#F6F6F6" colspan="4"><p>訂金　<?php echo "($".number_format($row_RecPlace["Pla_price"])."X".$row_RecBillde["Act_reservepeople"]."人)/10 "?></p></td>
+                <td align="center" valign="baseline" bgcolor="#F6F6F6"><p>$<?php echo number_format($row_RecBill["Bill_preprice"]);?></p></td>
+              </tr>
+
+			  <tr>
+                <td valign="baseline" bgcolor="#F6F6F6" colspan="4"><p>剩餘金額　<?php echo "($".number_format($row_RecBill["Bill_price"])."-$".number_format($row_RecBill["Bill_preprice"]).")";?></p></td>
+                <td align="center" valign="baseline" bgcolor="#F6F6F6"><p class="redword">$<strong><font color="red"><?php echo number_format($row_RecBill["Bill_price"]-$row_RecBill["Bill_preprice"]);?></font></strong>+</p></td>
+              </tr>      
+
+              
+              <tr>
+                <td valign="baseline" bgcolor="#F6F6F6" colspan="4"><p>總計</p></td>
+                <td align="center" valign="baseline" bgcolor="#F6F6F6"><p class="redword">$<?php echo number_format($row_RecBill["Bill_price"]);?> </p></td>
+              </tr>          
+            </table>
+			
+			
+			  <?php if($cartt->itemcount > 0) {?>
+              <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+                <tr>
+                  <th width="5%" bgcolor="#ECE1E1"><p>編號</p></th>
+                  <th width="13%" bgcolor="#ECE1E1"><p>使用日期</p></th>
+                  <th width="21%" bgcolor="#ECE1E1"><p>設施名稱</p></th>
+           
+                  <th width="6%" bgcolor="#ECE1E1"><p>人數</p></th>
+                  <th width="15%" bgcolor="#ECE1E1"><p>單價</p></th>
+                  <th width="18%" bgcolor="#ECE1E1"><p>小計</p></th>
+                  <th width="11%" bgcolor="#ECE1E1"><p>起始時間</p></th>
+                  <th width="11%" bgcolor="#ECE1E1"><p>結束時間</p></th>
+                </tr>
+                <?php		  
+		  	$i=0;
+			foreach($cartt->get_contents() as $item1) {
+			$i++;
+		  ?>
+                <tr>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $i;?>.</p></td>
+                  <td align="center"bgcolor="#F6F6F6" class="tdbline"><p><?php echo $item1['date'];?></p></td>
+                  <td bgcolor="#F6F6F6" class="tdbline"><p><?php echo $item1['info'];?></p></td>               
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $item1['qty'];?></p></td>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p>$ <?php echo number_format($item1['price']);?></p></td>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p>$ <?php echo number_format($item1['subtotal']);?></p></td>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $item1['st'];?></p></td>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $item1['ot'];?></p></td>
+                </tr>
+                <?php }?>
+                
+                <tr>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p>小計</p></td>
+                  <td valign="baseline" bgcolor="#F6F6F6">&nbsp;</td>
+                  <td valign="baseline" bgcolor="#F6F6F6"><p>&nbsp;</p></td>
+                  
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p>&nbsp;</p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p>&nbsp;</p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p class="redword">$ <?php echo number_format($cartt->total);?></p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6">&nbsp;</td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6">&nbsp;</td>
+                </tr>
+				
+				
+				
+              </table>
+              <hr width="100%" size="1" />
+              
+            
+            <?php }else{ ?>
+            <div class="infoDiv">
+			目前設施排程是空的。(您必須做設施排程才能送出結帳)</div>		
+			
+            <?php } ?>
+			
+			  <?php if($cart->itemcount > 0) {?>
+              <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+                <tr>
+                  <th width="5%" bgcolor="#ECE1E1"><p>編號</p></th>
+                  <th width="13%" bgcolor="#ECE1E1"><p>日期</p></th>
+                  <th width="21%" bgcolor="#ECE1E1"><p>產品名稱</p></th>
+           
+                  <th width="6%" bgcolor="#ECE1E1"><p>數量</p></th>
+                  <th width="15%" bgcolor="#ECE1E1"><p>單價</p></th>
+                  <th width="18%" bgcolor="#ECE1E1"><p>小計</p></th>
+                  <th width="11%" bgcolor="#ECE1E1"><p>起始時間</p></th>
+                  <th width="11%" bgcolor="#ECE1E1"><p>結束時間</p></th>
+                </tr>
+                <?php		  
+		  	$i=0;
+			foreach($cart->get_contents() as $item) {
+			$i++;
+		  ?>
+                <tr>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $i;?>.</p></td>
+                  <td align="center"bgcolor="#F6F6F6" class="tdbline"><p><?php echo $item['date'];?></p></td>
+                  <td bgcolor="#F6F6F6" class="tdbline"><p><?php echo $item['info'];?></p></td>               
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $item['qty'];?></p></td>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p>$ <?php echo number_format($item['price']);?></p></td>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p>$ <?php echo number_format($item['subtotal']);?></p></td>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><?php echo $item['st'];?></td>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><?php echo $item['ot'];?></td>
+                </tr>
+                <?php }?>
+                
+                <tr>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p>小計</p></td>
+                  <td valign="baseline" bgcolor="#F6F6F6">&nbsp;</td>
+                  <td valign="baseline" bgcolor="#F6F6F6"><p>&nbsp;</p></td>
+                  
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p>&nbsp;</p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p>&nbsp;</p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p class="redword">$ <?php echo number_format($cart->total);?></p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6">&nbsp;</td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6">&nbsp;</td>
+                </tr>
+				<tr>
+				  <td align="right" bgcolor="#F6F6F6"><p>訂單</p></td>
+                  <td align="left" bgcolor="#F6F6F6"><p>剩餘金額</p></td>
+                  <td valign="baseline" bgcolor="#F6F6F6"><p>&nbsp;</p></td>
+                  
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p>&nbsp;</p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p>&nbsp;</p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p class="redword">$ <?php echo number_format($row_RecBill["Bill_price"]-$row_RecBill["Bill_preprice"]);?></p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6">&nbsp;</td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6">&nbsp;</td>
+				</tr>
+				
+				
+              </table>
+              <hr width="100%" size="1" />
+              
+            </div>
+            <?php }else{ ?>
+            <div class="infoDiv">
+			目前設備與其他清單是空的。</div>		
+			</div>
+            <?php } ?>
+			
+			<p align="right"><font size="4" color="red" face="微軟正黑體"><strong>總計</font></strong><font size="4" color="red" face="微軟正黑體"><strong>$ <?php echo number_format(($row_RecBill["Bill_price"]-$row_RecBill["Bill_preprice"])+$cart->total+$cartt->total);?></strong></font>
+            </p>
+			
+			
+			
+			
+			<form action="checkreport.php" method="post" name="cartform" id="cartform" >
+                <p align="center">
+                  <input name="cartaction" type="hidden" id="cartaction" value="update">
+				  <?php if($cartt->itemcount > 0) {?>
+                  <input type="submit" name="updatebtn" id="button3" value="送出結帳單">
+				  <?php }?>
+				  <button type="button" onClick="print()">列印</button>
+                  <input type="button" name="backbtn" id="button4" value="繼續選擇設施與設備" onClick="location.href='checkoptionmain.php?p_id=<?php echo $row_RecBill["Pla_id"];?>'">
+                </p>
+              </form></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td height="30" align="center" background="album_r2_c1.jpg" class="trademark">© 2014 FunNewPlay All Rights Reserved.</td>
+  </tr>
+</table>
+</body>
+</html>

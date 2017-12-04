@@ -1,0 +1,154 @@
+<?php 
+header("Content-Type: text/html; charset=utf-8");
+require_once("ConneMysql.php");
+session_start();
+//檢查是否經過登入，若有登入則重新導向
+if(isset($_SESSION["loginMember"]) && ($_SESSION["loginMember"]!="")){
+	//若帳號等級為 member 則導向會員中心
+	if($_SESSION["membertype"]=="1"){
+		header("Location: member_center.php");
+	//否則則導向管理中心
+	}else{
+		header("Location: member_center.php");
+	}	
+}
+//執行會員登入
+if(isset($_POST["email"]) && isset($_POST["passwd"])){		
+	//繫結登入會員資料
+	$query_RecLogin = "SELECT * FROM `member` WHERE `Mem_email`='".$_POST["email"]."'";
+	$RecLogin = mysql_query($query_RecLogin);		
+	//取出帳號密碼的值
+	$row_RecLogin=mysql_fetch_assoc($RecLogin);
+	$id = $row_RecLogin["Mem_id"];
+	$email = $row_RecLogin["Mem_email"];
+	$passwd = $row_RecLogin["Mem_pass"];
+	$type = $row_RecLogin["Mem_type"];
+	//比對密碼，若登入成功則呈現登入狀態
+	if((md5($_POST["passwd"]))==$passwd){
+	//設定登入者的名稱及等級
+		$_SESSION["loginMember"]=$email;
+		$_SESSION["membertype"]=$type;
+		$_SESSION["memberid"]=$id;
+		if(isset($_POST["rememberme"])&&($_POST["rememberme"]=="true")){
+			setcookie("remEmail", $_POST["email"], time()+365*24*60);
+			setcookie("remPass", $_POST["passwd"], time()+365*24*60);
+		}else{
+			if(isset($_COOKIE["remEmail"])){
+				setcookie("remEmail", $_POST["email"], time()-100);
+				setcookie("remPass", $_POST["passwd"], time()-100);
+			}
+		}
+		//若帳號等級為 member 則導向會員中心
+		if($_SESSION["membertype"]=="1"){
+			header("Location: member_center.php");
+		//否則則導向管理中心
+		}else{
+			header("Location: member_center.php");
+		}
+	}else{
+		header("Location: index.php?errMsg=1");
+	}
+}
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Funnewplay//登入</title>
+<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+	<script type="text/javascript" src="javascript/angular.min.js"></script>
+	<script type="text/javascript" src="javascript/app.js"></script>
+	<script type="text/javascript" src="javascript/jquery-2.1.3.min.js"></script>
+	<script>
+	$(function(){
+      $('#target').click(function() {
+          //$(this).val("");  
+          $('input[name="target"]').val("");
+      });
+    });
+	</script>
+</head>
+
+<body ng-app="funNewPlay" ng-controller="funNewPlaylogin">
+<div id="wrapper">
+<nav class="mainnav">
+		<div class="container">
+			<div class="mainnav_left">
+				<a href="index.html"><img src="images/logo1.png" style="width:150px"></a>
+				<input id="target" name="target" type="text" class="mainnav_search_input" value="尋 找 場 地...">
+				<a href="#"><img src="images/search.png" width="39" height="34"></a>
+			</div>
+		  <div class="mainnav_right">
+				<a href="#"><img src="images/head.png" width="59" height="54"></a> 
+				<a href="#"><img src="images/name.png"></a>
+				<a href="#"><img src="images/cart.png" width="39" height="44"></a>
+			</div>
+		</div>
+</nav>
+		
+		<div class="maincontainer">
+		<div class="container">
+        <h4><b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您的位置：</b></h4>
+<p>&nbsp;</p>  
+		  <?php if(isset($_GET["errMsg"]) && ($_GET["errMsg"]=="1")){?>
+          <div class="errDiv"> 登入帳號或密碼錯誤！</div>
+          <?php }?>
+          <div class="maincontainer_login">
+          <div class="maincontainer_login_left">
+          <p class="heading">會員登入</p>
+          <form name="form1" method="post" action="">
+            <p>電子信箱
+              <br>
+              <input name="email" type="text" class="logintextbox" id="email" value="<?php echo $_COOKIE["remEmail"];?>">
+            </p>
+            <p>會員密碼<br>
+              <input name="passwd" type="password" class="logintextbox" id="passwd" value="<?php echo $_COOKIE["remPass"];?>">
+            </p>
+            <p>
+              <input name="rememberme" type="checkbox" id="rememberme" value="true" checked>
+記住我的帳號密碼。</p>
+            <p>
+              <input type="submit" name="button" id="button" value="登入系統">
+            </p>
+  </form>
+          <a href="admin_passmail.php">忘記密碼，補寄密碼信。</a></div>
+          <div class="maincontainer_login_right">
+            <p class="heading">加入會員</p>
+            <form name="form2" method="post" action="">
+              <p>電子信箱 <br>
+                <input name="email2" type="text" class="logintextbox" id="email2" value="">
+              </p>
+              <p>密碼：<br>
+                <input name="passwd2" type="password" class="logintextbox" id="passwd2" value="">
+              </p>
+              
+            
+            <p><strong>用戶協議/隱私協議</strong></p>
+            <p><input type="checkbox" name="checkbox" id="checkbox">我已經閱讀服務條款並同意註冊為會員</p>
+            <p><strong>以 <img src="images/facebook-banner.jpg" width="143" height="54"> 註冊</strong></p>
+            <p><a href="#"><img src="images/joinbutton.png" width="181" height="44"></a></p>
+            </form>
+          </div>
+          
+          
+
+        
+</div>
+</div>
+
+</div>
+</br></br></br></br>
+<footer class="footer">
+  <div class="container">
+    <ul class="footer_anchors">
+      <li><a href="">網站教學</a></li>
+      <li><a href="">聯絡我們</a></li>
+      <li><a href="contact.html">關於我們</a></li>
+      <li class="right">copyright 2015</li>
+    </ul>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

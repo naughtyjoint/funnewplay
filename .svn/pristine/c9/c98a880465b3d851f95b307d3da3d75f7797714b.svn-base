@@ -1,0 +1,243 @@
+<?php 
+header("Content-Type: text/html; charset=utf-8");
+require_once("ConneMysql.php");
+
+session_start();
+$_SESSION["billid"]=$_GET["id"];
+$billid=$_SESSION["billid"];
+if($billid!=$_GET["id"]){
+unset($_SESSION['titlelistclass']);
+unset($_SESSION['cartqq']);
+unset($_SESSION['cartt']);
+}
+if(!isset($_SESSION["loginMember"]) || ($_SESSION["loginMember"]=="")){
+	header("Location: index.php");
+}
+
+//繫結登入會員資料
+$query_RecMember = "SELECT * FROM `member` WHERE `Mem_email`='".$_SESSION["loginMember"]."'";
+$RecMember = mysql_query($query_RecMember);	
+$row_RecMember = mysql_fetch_assoc($RecMember);
+
+
+//繫結訂單資料
+$query_RecBill = "SELECT * FROM `bill` WHERE `Bill_id` = ".$_GET["id"];
+$RecBill = mysql_query($query_RecBill);
+$row_RecBill = mysql_fetch_assoc($RecBill);
+
+//繫結場地資料
+$query_RecPlace = "SELECT * FROM `place` WHERE `Pla_id`=".$row_RecBill["Pla_id"];
+$RecPlace = mysql_query($query_RecPlace);
+$row_RecPlace=mysql_fetch_assoc($RecPlace);
+
+//繫結訂單細節
+$query_RecBillde = "SELECT * FROM `billdetail` WHERE `Bill_id` = ".$_GET["id"];
+$RecBillde = mysql_query($query_RecBillde);
+$row_RecBillde = mysql_fetch_assoc($RecBillde);
+
+//繫結結帳單資料
+$query_RecCheck = "SELECT * FROM `check` WHERE `Bill_id` = ".$row_RecBill["Bill_id"];
+$RecCheck = mysql_query($query_RecCheck);
+$row_RecCheck = mysql_fetch_assoc($RecCheck);
+
+
+
+sscanf($row_RecBillde["Act_start"], "%d-%d-%d %d:%d:%d", $y, $m, $d, $h, $i, $s);
+$timestamp1 = mktime($h, $i, $s, $m, $d, $y);
+sscanf($row_RecBillde["Act_end"], "%d-%d-%d %d:%d:%d", $y, $m, $d, $h, $i, $s);
+$timestamp2 = mktime($h, $i, $s, $m, $d, $y);
+
+if($row_RecBill["Mem_id"] != $row_RecMember["Mem_id"]){
+	header("Location: member_center.php");
+}
+
+
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Funnewplay//fun新玩 ─ 預訂表</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table width="780" border="0" align="center" cellpadding="4" cellspacing="0" bgcolor="#FFFFFF">
+  <tr>
+    <td>
+    <a href="../phpmember/index.php"><img src="images/logo1.jpg" alt="場地資訊" width="301" height="168"></td>
+  </tr>
+  <tr>
+    <td class="tdbline"><table width="100%" border="0" cellspacing="0" cellpadding="10">
+        <tr valign="top">
+          <td><div class="normalDiv">
+              
+              <p class="heading"><img src="images/16-cube-orange.png" width="16" height="16" align="absmiddle">訂單內容
+			  <?php if($row_RecBill["Bill_pay"]=='0'&&$row_RecBill["CheckYN"]=='0'){?>
+			  (未付訂金)
+			  </p>
+			  <?php }else if($row_RecBill["Bill_pay"]=='1'&&$row_RecBill["CheckYN"]=='0'){ ?>
+			  (已付訂金)
+			  </p>
+			  <?php }else if($row_RecBill["RefundYN"]=='1'){?>
+			  (訂單已取消)
+			  </p>
+			  <?php }else if($row_RecBill["CheckYN"]=='1'){ ?>
+			  (已結帳)
+			  </p>
+			  <?php }else if($row_RecBill["CheckYN"]=='1'&&$row_RecBill["RefundYN"]=='1'){?>
+			  (活動已取消)
+			  </p>
+			  <?php }?>
+              <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+              <tr>
+                <th width="117" bgcolor="#ECE1E1"><p>編號</p></th>
+                <th width="171" bgcolor="#ECE1E1"><p>場地</p></th>
+				<th width="201" bgcolor="#ECE1E1"><p>下單日期</p></th>
+				<th colspan="2" bgcolor="#ECE1E1"><p>場勘日期</p></th>
+				</tr>
+			  
+			  <tr>
+				<td align="center" bgcolor="#F6F6F6"><p><?php echo $row_RecBill["Bill_id"];?></p></td>
+                <td align="center" bgcolor="#F6F6F6"><p><?php echo $row_RecPlace["Pla_name"];?></p></td>
+                <td align="center" bgcolor="#F6F6F6"><p><?php echo $row_RecBill["Bill_date"];?></p></td>
+                <td colspan="2" align="center" bgcolor="#F6F6F6"><p><?php echo $row_RecBill["Bill_sdate"];?></p></td>
+                </tr>
+			  
+			  <tr>
+				<th bgcolor="#ECE1E1"><p>客戶名稱</p></th>
+                <th bgcolor="#ECE1E1"><p>客戶聯絡人</p></th>
+				<th bgcolor="#ECE1E1"><p>聯絡人Email</p></th>
+				<th width="124" bgcolor="#ECE1E1"><p>聯絡電話(主要)</p></th>
+				<th width="101" bgcolor="#ECE1E1"><p>聯絡電話(備用)</p></th>
+			  </tr>
+        
+              <tr>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Cl_name"];?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Cl_charge"];?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Cl_email"];?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Cl_tel"];?></p></td>    
+				<td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Cl_cel"];?></p></td>  	
+			  </tr>
+			  
+			  <tr>
+				<th bgcolor="#ECE1E1"><p>付訂時間</p></th>
+				<th bgcolor="#ECE1E1" colspan="2"><p>活動日期</p></th>               
+				<th bgcolor="#ECE1E1"><p>活動天數</p></th>
+				<th bgcolor="#ECE1E1"><p>預定人數</p></th>
+			  </tr>
+			  
+			  <tr>
+				<td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Pay_date"];?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline" colspan="2"><p><?php echo (date("Y-m-d",$timestamp1));?> ~ <?php echo (date("Y-m-d",$timestamp2));?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBillde["Act_daycount"];?>天</p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBillde["Act_reservepeople"];?>人</p></td>                     	
+			  </tr>
+			  
+			  <tr>
+				<th bgcolor="#ECE1E1" colspan="5"><p>訂單價格</p></th>
+				</tr>
+				
+			  <tr>
+                <td valign="baseline" bgcolor="#F6F6F6" colspan="4"><p>訂金　<?php echo "(".number_format($row_RecPlace["Pla_price"])."X".$row_RecBillde["Act_reservepeople"].")/10 "?></p></td>
+                <td align="center" valign="baseline" bgcolor="#F6F6F6"><p>$<?php echo number_format($row_RecBill["Bill_preprice"]);?></p></td>
+              </tr>
+
+			  <tr>
+                <td valign="baseline" bgcolor="#F6F6F6" colspan="4"><p>剩餘金額　<?php echo "(".number_format($row_RecBill["Bill_price"])."-".number_format($row_RecBill["Bill_preprice"]).")";?></p></td>
+                <td align="center" valign="baseline" bgcolor="#F6F6F6"><p class="redword">$<strong><font color="red"><?php echo number_format(($row_RecBill["Bill_price"]-$row_RecBill["Bill_preprice"]));?></font></strong>+</p></td>
+              </tr>      
+
+              
+              <tr>
+                <td valign="baseline" bgcolor="#F6F6F6" colspan="4"><p>總計</p></td>
+                <td align="center" valign="baseline" bgcolor="#F6F6F6"><p class="redword">$<?php echo number_format($row_RecBill["Bill_price"]);?> </p></td>
+              </tr>          
+            </table>
+			
+
+			  
+			  <?php if($row_RecBill["Bill_pay"]=='1'&&$row_RecBill["CheckYN"]=='1'){?>
+			  </table>
+			  
+			  </br>
+			<table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+                <tr>
+                  <th width="13%" bgcolor="#ECE1E1"><p>日期</p></th>
+                  <th width="21%" bgcolor="#ECE1E1"><p>名稱</p></th>
+           
+                  <th width="6%" bgcolor="#ECE1E1"><p>數量</p></th>
+                  <th width="15%" bgcolor="#ECE1E1"><p>單價</p></th>
+                  <th width="18%" bgcolor="#ECE1E1"><p>小計</p></th>
+                  <th width="11%" bgcolor="#ECE1E1"><p>起始時間</p></th>
+                  <th width="11%" bgcolor="#ECE1E1"><p>結束時間</p></th>
+                </tr>
+                <?php
+					
+					
+					//繫結結帳單細節
+					$query_RecCheckde = "SELECT * FROM `checkdetail` WHERE `Check_id` = ".$row_RecCheck["Check_id"];
+					$RecCheckde = mysql_query($query_RecCheckde);
+					while($row_RecCheckde = mysql_fetch_assoc($RecCheckde)){
+					
+					sscanf($row_RecCheckde["Check_date"], "%d-%d-%d %d:%d:%d", $y, $m, $d, $h, $i, $s);
+					$FKUBUG = mktime($h, $i, $s, $m, $d, $y);
+					
+					
+		  ?>
+                <tr>
+                  <td align="center"bgcolor="#F6F6F6" class="tdbline"><p><?php echo date("Y-m-d",$FKUBUG);?></p></td>
+				  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecCheckde["Pro_name"];?></p></td>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecCheckde["Quantity"];?></p></td>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p>$ <?php echo $row_RecCheckde["Unit_price"];?></p></td>
+				  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p>$ <?php echo ($row_RecCheckde["Quantity"]*$row_RecCheckde["Unit_price"]);?></p></td>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecCheckde["Start_time"];?></p></td>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecCheckde["End_time"];?></p></td>
+                </tr>
+				<?php }?>
+                
+                <tr>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p>小計</p></td>
+                  <td valign="baseline" bgcolor="#F6F6F6"><p>&nbsp;</p></td>             
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p>&nbsp;</p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p>&nbsp;</p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p class="redword">$ <?php echo number_format($row_RecCheck["Check_price"]);?></p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6">&nbsp;</td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6">&nbsp;</td>
+                </tr>
+				<tr>
+				  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p>訂單剩餘金額</p></td>
+                  <td align="left" bgcolor="#F6F6F6" class="tdbline"><p>&nbsp;</p></td>
+                  <td valign="baseline" bgcolor="#F6F6F6" class="tdbline"><p>&nbsp;</p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6" class="tdbline"><p>&nbsp;</p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6" class="tdbline"><p class="redword">$ <?php echo number_format($row_RecBill["Bill_price"]-$row_RecBill["Bill_preprice"]);?></p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6" class="tdbline">&nbsp;</td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6" class="tdbline">&nbsp;</td>
+				</tr>
+				
+				<tr>
+				  <td align="right"><p><h2><strong><font color="red" face="微軟正黑體">總</font></strong></h2></p></td>
+                  <td align="left"><p><h2><strong><font color="red" face="微軟正黑體">計</font></strong></h2></p></td>
+                  <td valign="baseline"><p>&nbsp;</p></td>
+                  <td align="center" valign="baseline"><p>&nbsp;</p></td>
+                  <td align="center" valign="baseline"><p class="redword"><h2><font color="red" face="微軟正黑體">$ <?php echo number_format($row_RecCheck["Total_price"]);?></font></h2></p></td>
+                  <td align="center" valign="baseline">&nbsp;</td>
+                  <td align="center" valign="baseline">&nbsp;</td>
+				</tr>
+              </table>
+			 <?php }?>
+			
+			<button type="button" onClick="location.href='send.php?id=<?php echo $row_RecBill["Bill_id"];?>'">傳訊給場地</button>
+			<?php if($row_RecBill["Bill_pay"]=='1'&&$row_RecBill["CheckYN"]=='0'){?>
+			<button type="button" onClick="location.href='checkoptionmain.php?id=<?php echo $row_RecBill["Bill_id"];?>'">填寫預定單</button>
+			<?php }?>
+			<button type="button" onClick="location.href='cancel.php?id=<?php echo $_GET["id"];?>'">取消預訂/退費</button>
+			<button type="button" onClick="location.href='checkbill.php'">回上一頁</button>             
+            </div></td>
+        </tr>
+      </td>
+  </tr>
+  <tr>
+    <td height="30" align="center" background="images/album_r2_c1.jpg" class="trademark">© 2014 Funnewplay All Rights Reserved.</td>
+  </tr>
+</table>
+</body>
+</html>

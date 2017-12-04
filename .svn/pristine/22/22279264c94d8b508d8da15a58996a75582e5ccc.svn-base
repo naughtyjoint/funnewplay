@@ -1,0 +1,83 @@
+[09-Jun-2015 20:28:01 Asia/Taipei] PHP Fatal error:  Call to undefined function jaon_encode() in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\indexjason.php on line 43
+[09-Jun-2015 21:13:19 Asia/Taipei] PHP Parse error:  syntax error, unexpected 'json_encode' (T_STRING), expecting ',' or ';' in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\indexjason.php on line 47
+[09-Jun-2015 21:13:41 Asia/Taipei] PHP Parse error:  syntax error, unexpected '{' in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\indexjason.php on line 47
+[03-Jul-2015 19:06:51 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkfainfo.php on line 43
+[03-Jul-2015 19:22:04 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\placeinfo.php on line 15
+[03-Jul-2015 19:22:04 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\placeinfo.php on line 49
+[03-Jul-2015 19:22:04 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\placeinfo.php on line 193
+[03-Jul-2015 23:55:22 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkfainfo.php on line 43
+[04-Jul-2015 00:35:22 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkfainfo.php on line 43
+[04-Jul-2015 10:00:34 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkfainfo.php on line 43
+[04-Jul-2015 10:09:50 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\bill.php on line 26
+[04-Jul-2015 10:09:50 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\bill.php on line 31
+[04-Jul-2015 10:09:50 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\bill.php on line 36
+[04-Jul-2015 10:09:50 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\bill.php on line 41
+[04-Jul-2015 10:10:22 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\member_center.php on line 62
+[04-Jul-2015 10:49:38 Asia/Taipei] PHP Warning:  require_once(connMysql.php): failed to open stream: No such file or directory in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\member_admin.php on line 3
+[04-Jul-2015 10:49:38 Asia/Taipei] PHP Fatal error:  require_once(): Failed opening required 'connMysql.php' (include_path='.;') in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\member_admin.php on line 3
+[04-Jul-2015 10:51:01 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\admin_center.php on line 62
+[04-Jul-2015 11:18:05 Asia/Taipei] PHP Parse error:  syntax error, unexpected '{' in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\admin_center.php on line 6
+[04-Jul-2015 11:18:09 Asia/Taipei] PHP Parse error:  syntax error, unexpected '{' in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\admin_center.php on line 6
+[04-Jul-2015 11:18:17 Asia/Taipei] PHP Parse error:  syntax error, unexpected '{' in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\admin_center.php on line 6
+[04-Jul-2015 11:18:31 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\admin_center.php on line 62
+[04-Jul-2015 11:20:21 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\member_center.php on line 66
+[04-Jul-2015 17:13:48 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\admin_center.php on line 57
+[04-Jul-2015 17:22:55 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkout.php on line 20
+[04-Jul-2015 18:01:57 Asia/Taipei] PHP Parse error:  syntax error, unexpected '{' in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 39
+[04-Jul-2015 18:06:58 Asia/Taipei] PHP Parse error:  syntax error, unexpected '$row_RecBill' (T_VARIABLE), expecting ',' or ';' in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 42
+[04-Jul-2015 18:26:49 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\member_center.php on line 67
+[04-Jul-2015 20:43:41 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\member_center.php on line 67
+[04-Jul-2015 20:52:53 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\member_center.php on line 67
+[04-Jul-2015 20:53:52 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\member_center.php on line 67
+[04-Jul-2015 20:54:10 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\member_center.php on line 67
+[04-Jul-2015 20:54:20 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\member_center.php on line 67
+[04-Jul-2015 21:09:09 Asia/Taipei] PHP Parse error:  syntax error, unexpected '\' (T_NS_SEPARATOR), expecting ',' or ';' in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 44
+[04-Jul-2015 21:09:26 Asia/Taipei] PHP Fatal error:  Undefined constant 'n' in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 44
+[04-Jul-2015 21:09:35 Asia/Taipei] PHP Parse error:  syntax error, unexpected '"\n"' (T_CONSTANT_ENCAPSED_STRING), expecting ',' or ';' in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 44
+[05-Jul-2015 13:50:47 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkfainfo.php on line 43
+[05-Jul-2015 14:17:29 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\member_center.php on line 67
+[05-Jul-2015 14:37:21 Asia/Taipei] PHP Warning:  mail(): Failed to connect to mailserver at &quot;localhost&quot; port 25, verify your &quot;SMTP&quot; and &quot;smtp_port&quot; setting in php.ini or use ini_set() in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkout.php on line 82
+[05-Jul-2015 15:01:09 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkcheckout.php on line 21
+[05-Jul-2015 15:01:09 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkcheckout.php on line 26
+[05-Jul-2015 15:01:09 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkcheckout.php on line 31
+[05-Jul-2015 15:01:10 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\facilitycart.php on line 18
+[05-Jul-2015 15:01:10 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\facilitycart.php on line 23
+[05-Jul-2015 15:01:11 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\facilitycart.php on line 18
+[05-Jul-2015 15:01:11 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\facilitycart.php on line 23
+[05-Jul-2015 15:09:56 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\facilitycart.php on line 18
+[05-Jul-2015 15:09:56 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\facilitycart.php on line 23
+[05-Jul-2015 15:09:56 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\facilitycart.php on line 18
+[05-Jul-2015 15:09:56 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\facilitycart.php on line 23
+[05-Jul-2015 15:10:00 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkoptionmain.php on line 21
+[05-Jul-2015 15:10:00 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkoptionmain.php on line 26
+[05-Jul-2015 15:10:00 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkoptionmain.php on line 31
+[05-Jul-2015 15:10:00 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkoptionmain.php on line 56
+[05-Jul-2015 15:10:00 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkoptionmain.php on line 60
+[05-Jul-2015 15:10:00 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkoptionmain.php on line 64
+[05-Jul-2015 15:10:00 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkoptionmain.php on line 181
+[05-Jul-2015 15:10:00 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkoptionmain.php on line 184
+[05-Jul-2015 15:10:00 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\checkoptionmain.php on line 187
+[06-Jul-2015 00:58:16 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\member_center.php on line 67
+[06-Jul-2015 01:24:36 Asia/Taipei] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO), expecting ',' or ';' in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 60
+[06-Jul-2015 01:24:38 Asia/Taipei] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO), expecting ',' or ';' in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 60
+[06-Jul-2015 01:24:59 Asia/Taipei] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO), expecting ',' or ';' in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 84
+[06-Jul-2015 01:25:00 Asia/Taipei] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO), expecting ',' or ';' in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 84
+[06-Jul-2015 01:25:01 Asia/Taipei] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO), expecting ',' or ';' in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 84
+[06-Jul-2015 02:00:33 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 73
+[06-Jul-2015 02:00:33 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 73
+[06-Jul-2015 02:00:33 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 73
+[06-Jul-2015 02:00:33 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 73
+[06-Jul-2015 02:00:33 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 73
+[06-Jul-2015 02:00:33 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 73
+[06-Jul-2015 02:00:33 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 73
+[06-Jul-2015 02:00:33 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 73
+[06-Jul-2015 02:00:33 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\statistic.php on line 73
+[06-Jul-2015 02:57:11 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\member_center.php on line 67
+[06-Jul-2015 15:40:44 Asia/Taipei] PHP Parse error:  syntax error, unexpected end of file in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\FBindex.php on line 43
+[06-Jul-2015 15:41:35 Asia/Taipei] PHP Parse error:  syntax error, unexpected end of file in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\FBindex.php on line 42
+[06-Jul-2015 15:41:36 Asia/Taipei] PHP Parse error:  syntax error, unexpected end of file in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\FBindex.php on line 42
+[06-Jul-2015 15:41:36 Asia/Taipei] PHP Parse error:  syntax error, unexpected end of file in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\FBindex.php on line 42
+[06-Jul-2015 15:41:36 Asia/Taipei] PHP Parse error:  syntax error, unexpected end of file in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\FBindex.php on line 42
+[06-Jul-2015 15:42:51 Asia/Taipei] PHP Warning:  mysql_connect(): Access denied for user 'root'@'localhost' (using password: NO) in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\dbconfig.php on line 6
+[06-Jul-2015 15:54:16 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\functions.php on line 7
+[06-Jul-2015 18:09:29 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\user\Desktop\TWAMPd\htdocs\funnewplay\billinfo.php on line 197

@@ -1,0 +1,120 @@
+<?php 
+header("Content-Type: text/html; charset=utf-8");
+require_once("ConneMysql.php");
+require_once("wfcartqq.php");
+require_once("wfcartqq2.php");
+session_start();
+
+
+
+if(isset($_POST["cartaction"]) && ($_POST["cartaction"]!="")){
+	//購物車開始
+	
+	
+	//繫結登入會員資料
+	$query_RecMember = "SELECT * FROM `member` WHERE `Mem_email`='".$_SESSION["loginMember"]."'";
+	$RecMember = mysql_query($query_RecMember);	
+	$row_RecMember = mysql_fetch_assoc($RecMember);
+
+
+	//繫結訂單資料
+	$query_RecBill = "SELECT * FROM `bill` WHERE `Bill_id` = ".$_SESSION["billid"];
+	$RecBill = mysql_query($query_RecBill);
+	$row_RecBill = mysql_fetch_assoc($RecBill);
+	
+	//繫結場地資料
+	$query_RecPlace = "SELECT * FROM `place` WHERE `Pla_id` = ".$row_RecBill["Pla_id"];
+	$RecPlace = mysql_query($query_RecPlace);
+	$row_RecPlace = mysql_fetch_assoc($RecPlace);
+	
+	$cartt =& $_SESSION['cartt']; // 將購物車(設施)的值設定為 Session
+	if(!is_object($cartt)) $cartt = new wfcartt();
+	
+	$cart =& $_SESSION['cartqq']; // 將購物車的值設定為 Session
+	if(!is_object($cart)) $cart = new wfCart();
+	//購物車結束
+
+	$query_update = "UPDATE `bill` SET ";
+	$query_update .= "`CheckYN`='1' ";
+	$query_update .= "WHERE `Bill_id`=".$row_RecBill["Bill_id"];	
+	mysql_query($query_update);
+		
+	//新增結帳單資料
+	$sql_query = "INSERT INTO `check` (`Check_date`, `Check_price`, `Total_price`, `Bill_id`) VALUES (";
+	$sql_query .= "NOW(),";
+	$sql_query .= $cart->total+$cartt->total.",'";
+	$sql_query .= ($cart->total+$cartt->total+(($row_RecBill["Bill_price"])-($row_RecBill["Bill_preprice"])))."',";
+	$sql_query .= "'".$row_RecBill["Bill_id"]."')";
+	mysql_query($sql_query);
+	//取得新增的訂單編號
+	$o_pid = mysql_insert_id();
+	//新增訂單內貨品資料
+	if($cartt->itemcount > 0) {
+		foreach($cartt->get_contents() as $item1) {
+		
+		sscanf($item1['st'], "%d:%d:%d", $h, $i, $s);
+		$timestamp1 = mktime($h, $i, $s);
+		sscanf($item1['ot'], "%d:%d:%d", $h, $i, $s);
+		$timestamp2 = mktime($h, $i, $s);
+		
+		
+		
+		
+		
+		$sql_query="INSERT INTO `checkdetail` (`Check_id`  ,`Pro_name` ,`Unit_price` ,`Quantity` ,`Check_date` ,`Start_time` ,`End_time`) VALUES (";
+		$sql_query .= $o_pid.",";
+		$sql_query .= "'".$item1['info']."',";
+		$sql_query .= $item1['price'].",";
+		$sql_query .= $item1['qty'].",";
+		$sql_query .= "'".$item1['date']."',";
+		$sql_query .= "'".$item1['st']."',";
+		$sql_query .= "'".$item1['ot']."')";	
+		mysql_query($sql_query);
+		
+		
+		
+		//設施ID與設施名稱配置
+		$query_RecFacility = "SELECT `Facility_id` FROM `facility` WHERE `Facility_name` = "."'".$item1['info']."'";
+		$RecFacility = mysql_query($query_RecFacility);
+		$row_RecFacility = mysql_fetch_assoc($RecFacility);
+		
+		for($i=$timestamp1;$i<=$timestamp2;$i+=1800){
+		$time=date("H:i:s",$i);
+		
+		$sql_query1="INSERT INTO `facilitypeoplecount` (`Bill_id` ,`Facility_id` ,`FPC_date` ,`FPC_time` ,`FPC_load`) VALUES (";
+		$sql_query1 .= $row_RecBill["Bill_id"].",";
+		$sql_query1 .= $row_RecFacility["Facility_id"].",";
+		$sql_query1 .= "'".$item1['date']."',";
+		$sql_query1 .= "'".$time."',";
+		$sql_query1 .= "'".$item1['qty']."')";	
+		mysql_query($sql_query1);
+		}
+	}
+		if($cart->itemcount > 0) {
+		foreach($cart->get_contents() as $item) {
+		$sql_query="INSERT INTO `checkdetail` (`Check_id`  ,`Pro_name` ,`Unit_price` ,`Quantity` ,`Check_date` ,`Start_time` ,`End_time`) VALUES (";
+		$sql_query .= $o_pid.",";
+		$sql_query .= "'".$item['info']."',";
+		$sql_query .= $item['price'].",";
+		$sql_query .= $item['qty'].",";
+		$sql_query .= "'".$item['date']."',";
+		$sql_query .= "'".$item['st']."',";
+		$sql_query .= "'".$item['ot']."')";	
+		mysql_query($sql_query);
+		}
+	}
+		
+	
+	
+}
+	
+	//清空購物車
+	$cart->empty_cart();
+	$cartt->empty_cart();
+	unset($_SESSION["billid"]);
+}	
+?>
+<script language="javascript">
+alert("感謝您的選擇，活動資料已更新。");
+window.location.href='billinfo.php?id=<?php echo $row_RecBill["Bill_id"]?>';
+</script>

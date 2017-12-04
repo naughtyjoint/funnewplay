@@ -1,0 +1,48 @@
+0.0.0.0.1
+最初版
+
+0.1.0.0.1
+test.php修正加上QQ註解
+
+0.2.0.0.1
+修改cart.php內碼基本入場費設定
+
+0.3.0.0.1
+修改下訂單後，加入設施排程中連接結帳單導向
+
+0.4.0.1.1
+修改登入頁面UI，CSS修正，新增幾張UI原件
+
+0.5.0.2.1
+修改登入button頁面首頁UI，CSS修正，新增幾張UI原件
+
+0.6.1.3.1
+login.php加入FB login API與註冊欄位，index.html改成index.php，CSS修正
+
+0.7.1.3.2
+paydatesetting.php重新導向修正，註冊流程導入login.php，checkout.php加入JS的場勘日期，email判斷，checkoptionmain.php小修正，bill.php網址修正
+
+0.8.1.3.2
+placeupdate.php 加入子帳號新增功能 
+並且加入 admin資料夾 內有(adminlogin.php 子帳號登入,admin_billinfo 帳單細節,admin_billman帳單列表
+admin_cancelbill取消帳單,admin_center管理員中心,admin_insertdevice,admin_insertfaci,admin_insertprovide
+管理員新增設施設備提供,admin_deupdate,admin_faupdate,admin_proupdate 管理員修改設施設備提供 admin_noteinfo
+admin_noteman admin_sendback admin_sendnotificat 管理員訊息功能 admin_statistic 管理員統計功能
+
+0.9.1.3.2
+insertadmin.php 加入新增管理員頁面
+
+0.10.1.3.2
+修改 adminlogin.php 登入問題
+
+0.11.1.3.2
+修改 admin_statistc 單一場地顯示帳單問題
+
+0.12.1.3.2
+系統管理員頁面由admin_center改為systemadmin.php，修改placeinfo.php連結bug，checkoptionmain.php新增雨備排程連結以及刪除幹部清單，新增falistrain.php頁面(雨備頁面)，修正login.php連結bug
+
+0.13.1.3.2
+增加文字編輯器 加入文字編輯js
+
+0.14.1.3.2
+修改 取消訂單頁面的文字編輯器，修改 場地設定顯示面

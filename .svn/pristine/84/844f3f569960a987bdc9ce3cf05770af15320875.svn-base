@@ -1,0 +1,156 @@
+<?php 
+header("Content-Type: text/html; charset=utf-8");
+require_once("ConneMysql.php");
+session_start();
+unset($_SESSION['titlelistclass']);
+unset($_SESSION['cartqq']);
+//檢查是否經過登入
+/*if(!isset($_SESSION["loginMember"]) || ($_SESSION["loginMember"]=="")){
+	header("Location: index.php");
+}
+//執行登出動作
+if(isset($_GET["logout"]) && ($_GET["logout"]=="true")){
+	unset($_SESSION["loginMember"]);
+	header("Location: index.php");
+}
+
+
+//繫結登入會員資料
+$query_RecMember = "SELECT * FROM `member` WHERE `Mem_email`='".$_SESSION["loginMember"]."'";
+$RecMember = mysql_query($query_RecMember);		//執行SQL語法
+$row_RecMember=mysql_fetch_assoc($RecMember);	//取出會員資料存入變數中
+
+if($_SESSION["membertype"]=="2"){
+	header("Location: member_center.php");
+}*/
+function cut_str($str,$len) {    
+     $j=strlen($str)/2-2;
+  $m="";
+  for($i=1;$i<=$j;$i++){$m=$m."*";}
+  $n = 0;    
+     $tempstr = '';    
+    for ($i=0; $i<$len; $i++) {    
+        if (ord(substr($str,$n,1)) > 224) {    
+             $tempstr .= substr($str,$n,3);    
+            $n += 3;    
+             $i++;    
+        } elseif (ord(substr($str,$n,1)) > 192) {    
+             $tempstr .= substr($str,$n,2);    
+            $n += 2;    
+            $i++;   
+        } else {    
+            $tempstr .= substr($str,$n,1);    
+             $n ++;    
+        }    
+    }       
+    return $tempstr.$m;    
+ }   
+
+?>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Funnewplay//fun新玩 ─ 訂單管理</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<table width="780" border="0" align="center" cellpadding="4" cellspacing="0">
+  <tr>
+    <td class="tdbline"><a href="index.php"><img src="images/logo1.png" alt="會員系統" width="301" height="168"><div id="header">
+	    <div id="menubar">
+          <ul id="menu">
+          <li class="current"><a href="index.php">回首頁</a></li>
+            <li><a href="plasearch.php">瀏覽場地</a></li>
+            <li><a href="Q&A.html">Q&A問與答</a></li>
+            <li><a href="contact.html">ABOUT US 關於我們</a></li>
+          </ul>
+        </div><!--close menubar-->
+      </div><!--close header-->	 </td>
+  </tr>
+  <tr>
+    <td class="tdbline"><table width="100%" border="0" cellspacing="0" cellpadding="10">
+      <tr valign="top">
+        <td class="tdrline"><p class="title">訂單列表</p>
+           	
+		
+            
+            <table width="100%" border="1" align="center">
+  <!-- 表格表頭 -->
+  <tr>
+    <th><font face="微軟正黑體">姓名</font></th>
+    <th><font face="微軟正黑體">電話</font></th>
+    <th><font face="微軟正黑體">信用卡末五碼</font></th>
+    <th><font face="微軟正黑體">訂位日期</font></th>
+	<th><font face="微軟正黑體">付款狀態</font></th>
+	
+    
+  </tr>
+  <!-- 資料內容 -->
+<?php
+
+/*	$sql_query2 = "SELECT * FROM `bill` WHERE `Mem_id` = '".$row_RecMember["Mem_id"]."' AND `RefundYN` = '0'";
+	$RecBill = mysql_query($sql_query2);
+	
+	while($row_result = mysql_fetch_assoc($RecBill)){*/
+
+	$sql_query1 = "SELECT * FROM `fakebill` WHERE `Pla_id` = ".$_GET["id"];
+	$RecPlace = mysql_query($sql_query1);
+	
+	while($row_RecPlace = mysql_fetch_assoc($RecPlace)){
+	$st=$row_RecPlace["Fake_name"] ;
+	$ph=$row_RecPlace["Fake_phone"];
+	//$strsub=substr($str,1);
+	//$newstr=substr_replace($str,"*",1); 
+	
+
+	
+		echo "<tr>
+		";
+		echo "<td align='center'><font face=\"微軟正黑體\">".$row_RecPlace["Fake_name"]."</font></td>
+		";
+		echo "<td align='center'><font face=\"微軟正黑體\">".cut_str($ph,7)."</font></td>
+		";
+		echo "<td align='center'><font face=\"微軟正黑體\">".$row_RecPlace["Fake_card"]."</font></td>
+		";
+		echo "<td align='center'><font face=\"微軟正黑體\">".$row_RecPlace["act_start"]."</font></td>
+		";
+		if($row_RecPlace["Bill_pay"]=='0'&&$row_RecPlace["RefundYN"]=='0'&&$row_RecPlace["CheckYN"]=='0'){
+		echo "<td align='center'><font face=\"微軟正黑體\">未付訂金</font></td>
+		";
+		}else if($row_RecPlace["Bill_pay"]=='1'&&$row_RecPlace["RefundYN"]=='0'&&$row_RecPlace["CheckYN"]=='0'){
+		echo "<td align='center'><strong><font face=\"微軟正黑體\">已付訂金</font></strong></td>
+		";
+		}else if($row_RecPlace["CheckYN"]=='1'){
+		echo "<td align='center'><strong><font face=\"微軟正黑體\"  color=\"red\">已結帳</font></strong></td>
+		";}
+		echo "</tr>
+		";
+	}
+
+?>
+        
+        
+</table>
+            <p>&nbsp;</p>
+            <form name="formuseless" method="post" action="">
+              <input type="button" name="Submit" value="回上一頁" onClick="location.href='member_center.php'">
+            </form>
+            <p>&nbsp;</p>
+
+          </td>
+		
+		  
+	
+		
+        </tr>
+    </table></td>
+	
+  </tr>
+  <tr>
+    <td align="center" background="images/album_r2_c1.jpg" class="trademark">© 2014 Funnewplay All Rights Reserved.</td>
+  </tr>
+</table>
+</body>
+</html>

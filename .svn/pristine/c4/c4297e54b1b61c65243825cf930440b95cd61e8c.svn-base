@@ -1,0 +1,14 @@
+[15-Jul-2015 00:42:48 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\faupdate.php on line 25
+[15-Jul-2015 00:42:48 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\faupdate.php on line 33
+[15-Jul-2015 00:42:48 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\faupdate.php on line 121
+[15-Jul-2015 00:42:56 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\faupdate.php on line 25
+[15-Jul-2015 00:42:56 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\faupdate.php on line 33
+[15-Jul-2015 00:42:56 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\faupdate.php on line 121
+[16-Jul-2015 22:57:06 Asia/Taipei] PHP Warning:  unlink(photos/S__8339459.jpg): No such file or directory in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\placeupdate.php on line 37
+[17-Jul-2015 02:05:29 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\admin_center.php on line 48
+[17-Jul-2015 02:05:33 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\admin_center.php on line 48
+[17-Jul-2015 02:05:35 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\admin_center.php on line 48
+[17-Jul-2015 02:23:01 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\admin_center.php on line 48
+[17-Jul-2015 02:23:07 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\admin_center.php on line 48
+[17-Jul-2015 02:23:10 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\admin_center.php on line 48
+[17-Jul-2015 02:26:54 Asia/Taipei] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\admin_center.php on line 48

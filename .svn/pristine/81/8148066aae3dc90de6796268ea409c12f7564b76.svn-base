@@ -1,0 +1,115 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Funnewplay//fun新玩</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<table width="780" border="0" align="center" cellpadding="4" cellspacing="0">
+  <tr>
+    <td class="tdbline"><a href="../phpmember/index.php"><img src="images/logo1.jpg" alt="場地資訊" width="301" height="168">
+    <h4>Even can not legendary life, just leave memories</h4>
+	<div id="menubar">
+          <ul id="menu">
+          <li><a href="../phpmember/index.php">回首頁</li>
+            <li><a href="../phpmember/plasearch.php">瀏覽場地</li>
+            <li><a href="../phpmember/Q&A.html">Q&A</li>
+            <li><a href="../phpmember/contact.html">ABOUT US 關於我們</li>
+          </ul>
+        </div><!--close menubar-->
+    </td>
+  </tr>
+  <tr>
+    <td class="tdbline"><table width="100%" border="0" cellspacing="0" cellpadding="10">
+      <tr valign="top">
+        <p class="title">Q&A</p>
+		<center>
+          <table border="1" cellspacing="0" cellpadding="0" width="700">
+            <tr>
+              <td width="99" valign="top"><p align="center">題號 </p></td>
+              <td width="272" valign="top"><p align="center">問 題 </p></td>
+              <td width="400" valign="top"><p align="center">答 案 </p></td>
+            </tr>
+            <tr>
+              <td width="99" valign="top"><p align="center">1</p></td>
+              <td width="272" valign="top"><p>有關場地租借的地址與聯絡方式？ </p></td>
+              <td width="400" valign="top"><p>本網站各場地場地資訊內都有相關資料提供 </p></td>
+            </tr>
+            <tr>
+              <td width="99" valign="top"><p align="center">2</p></td>
+              <td width="272" valign="top"><p>前往各場地交通方式? </p></td>
+              <td width="400" valign="top"><p>您可以選擇以下方式到達： </p>
+                <ol>
+                  <li>自行前往 </li>
+                  <li>選擇本網站提供租賃車 </li>
+                </ol></td>
+            </tr>
+            <tr>
+              <td width="99" valign="top"><p align="center">3</p></td>
+              <td width="272" valign="top"><p>申請場地之資格與順序為何？ </p></td>
+              <td width="400" valign="top"><p>申請使用場地使用資格:<br>
+                1.本網站會員。 <br>
+                順序排序方式:<br>
+                1.先付訂金之團體。 <br>
+                2.網站更新為每日下午五點非即時更新 </p></td>
+            </tr>
+            <tr>
+              <td width="99" valign="top"><p align="center">4</p></td>
+              <td width="272" valign="top"><p>場地是否有使用用途限制呢？ </p></td>
+              <td width="400" valign="top"><p>本場地之使用用途，以辦理有關迎新宿營、公關活動、探索教育之下列活動為限： <br>
+                一 學術性、教育性、政策推廣之集會、演講。 <br>
+                二 休閒、育樂文化藝術及展覽。 <br>
+                三 其他經主管機關或合法核准之活動。 </p></td>
+            </tr>
+            <tr>
+              <td width="99" valign="top"><p align="center">5</p></td>
+              <td width="272" valign="top"><p>請問網站有提供哪些場地租借? </p></td>
+              <td width="400" valign="top"><p>各場地內不含有設施及設備:<br>
+                設施舉例:                            設備舉例:</p>
+                <ol>
+                  <li>大草皮                                     1.小椅子 </li>
+                  <li>風雨操場                                 2.延長線 </li>
+                  <li>小木屋                                     3.投影機 </li>
+                </ol></td>
+            </tr>
+            <tr>
+              <td width="99" valign="top"><p align="center">6</p></td>
+              <td width="272" valign="top"><p>如何申請場地租借呢?</p></td>
+              <td width="400" valign="top"><p>可以依照本網站流程步驟:<br>
+                1.申請會員 2.瀏覽場地  3.預定場地日期 4.場地勘查 5.付訂金  6.選擇需要設施設備 7.結帳 </p></td>
+            </tr>
+            <tr>
+              <td width="99" valign="top"><p align="center">7</p></td>
+              <td width="272" valign="top"><p>請問各場地訂金如何計算?</p></td>
+              <td width="400" valign="top"><p>1. 預定人數之百分之十為訂金 <br>
+                2. 幹部人數費用百分之三十為訂金 </p></td>
+            </tr>
+            <tr>
+              <td width="99" valign="top"><p align="center">8</p></td>
+              <td width="272" valign="top"><p>如何申請退還訂金?</p></td>
+              <td width="400" valign="top"><p>依照本網站退費標準並符合消費者保護法之相關法規依照距離活動天數給予退還 </p></td>
+            </tr>
+            <tr>
+              <td width="99" valign="top"><p align="center">9</p></td>
+              <td width="272" valign="top"><p>有何種情形不予核准申請場地使用?</p></td>
+              <td width="400" valign="top"><p>1.場地方不願租借給該單位 2. 主管機關未核准辦理此活動 3.未附在時間內完成繳納訂金 </p></td>
+            </tr>
+          </table>
+		  </center>
+          <p>&nbsp;</p>
+          <center>
+          <button type="button" onClick="window.history.back();">回上一頁</button>
+        </center>
+        </tr>
+       
+    </td>
+   
+  </tr>
+  
+  <tr>
+    <td align="center" background="images/album_r2_c1.jpg" class="trademark">© 2014 Funnewplay Studio All Rights Reserved.</td>
+  </tr>
+</table>
+</body>
+</html>

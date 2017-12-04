@@ -1,0 +1,10 @@
+	<footer class="footer">
+		<div class="container">
+			<ul class="footer_anchors">
+				<li><a href="">網站教學</a></li>
+				<li><a href="">聯絡我們</a></li>
+				<li><a href="contact.html">關於我們</a></li>
+				<li class="right">copyright 2015</li>
+			</ul>
+		</div>
+	</footer>

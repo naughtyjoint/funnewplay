@@ -1,0 +1,231 @@
+﻿<?php 
+header("Content-Type: text/html; charset=utf-8");
+require_once("ConneMysql.php");
+
+session_start();
+
+if(!isset($_SESSION["loginMember"]) || ($_SESSION["loginMember"]=="")){
+	header("Location: login.php");
+}
+
+//繫結登入會員資料
+$query_RecMember = "SELECT * FROM `member` WHERE `Mem_email`='".$_SESSION["loginMember"]."'";
+$RecMember = mysql_query($query_RecMember);	
+$row_RecMember=mysql_fetch_assoc($RecMember);
+$m_id = $row_RecMember["Mem_id"];
+
+
+
+//繫結場地資料
+$query_RecPlace = "SELECT * FROM `place` WHERE `Pla_id` = ".$_GET["id"];
+$RecPlace = mysql_query($query_RecPlace);
+$row_RecPlace=mysql_fetch_assoc($RecPlace);
+$limitpeople=$row_RecPlace["Pla_people"];
+
+$Totalprice = $_GET["qty"] * $row_RecPlace["Pla_price"];
+
+
+
+
+
+
+
+// 更新訂單內容
+if(isset($_POST["cartaction"]) && ($_POST["cartaction"]=="update")){
+		$Totalprice = $_POST["qty"] * $row_RecPlace["Pla_price"];
+	
+	header("Location: cart.php");
+}
+
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Funnewplay//fun新玩</title>
+<link href="stylecart.css" rel="stylesheet" type="text/css">
+<script language="javascript">
+function checkForm1(){
+	
+	if(document.dateform.resstardate.value==""){
+		alert("請填入活動開始日期!");
+		document.dateform.resstardate.focus();
+		return false;
+	}
+	if(document.dateform.resenddate.value==""){
+		alert("請填入活動節束日期!");
+		document.dateform.resenddate.focus();
+		return false;
+	}
+	
+}
+</script>
+</head>
+
+<body>
+<table width="780" border="0" align="center" cellpadding="4" cellspacing="0" bgcolor="#FFFFFF">
+  <tr>
+	<td>
+    <a href="../phpmember/index.php"><img src="images/logo1.jpg" alt="場地資訊">
+	</td>
+  </tr>
+  <tr>
+    <td class="tdbline"><table width="100%" border="0" cellspacing="0" cellpadding="10">
+      <tr valign="top">
+        <td><div class="subjectDiv"> <span class="heading"><img src="images/16-cube-green.png" width="16" height="16" align="absmiddle"></span> 預訂內容</div>
+          <div class="normalDiv">
+          
+            
+            
+            
+			
+		
+
+            
+			<form action="" method="get" name="dateform" id="dateform" onSubmit="return checkForm1();">
+			  <table width="98%" border="0" align="center" cellpadding="2" cellspacing="1">
+			  <tr>
+                <th width="15%" bgcolor="#ECE1E1"><p>活動日期</p></th>
+                <td width="59%" bgcolor="#F6F6F6"><p>
+                  <input type="date" name="resstardate" id="resstardate" value="<?php echo $_GET["resstardate"] ?>"> ~
+                  <input type="date" name="resenddate" id="resenddate" value="<?php echo $_GET["resenddate"] ?>">
+                  </p></td>
+                <td width="26%" bgcolor="#F6F6F6">
+                <input name="updateaction" type="hidden" id="updateaction" value="update">
+				<input name="id" type="hidden" id="id" value="<?php echo $row_RecPlace["Pla_id"];?>">
+                <input name="serchdate" type="submit" id="serchdate" value="確定"></td>
+                
+                </tr>
+				
+			  </table>
+				</form>
+
+<?php				
+if(isset($_GET["resstardate"]) && ($_GET["resstardate"]!="") && isset($_GET["resenddate"]) && ($_GET["resenddate"]!="")){
+
+		sscanf($_GET["resenddate"], "%d-%d-%d %d:%d:%d", $y, $m, $d, $h, $i, $s);
+		$timestamp1 = mktime($h, $i, $s, $m, $d, $y);
+		sscanf($_GET["resstardate"], "%d-%d-%d %d:%d:%d", $y, $m, $d, $h, $i, $s);
+		$timestamp2 = mktime($h, $i, $s, $m, $d, $y);
+		
+		if($timestamp1<$timestamp2 || $timestamp1<time() || $timestamp2<time()){
+			echo "日期錯誤，請重新輸入";
+			}else{
+		
+			echo "<table>" ;
+			echo "<tr>";
+			
+			for($i=$timestamp2;$i<=$timestamp1;$i+=(3600*24)){
+			$date=date("Y-m-d",$i);
+			$pdate=date("m/d",$i);
+
+//計算場地當天總人數
+$query_RecPPC = "SELECT sum(`PPC_load`)as totalNum,`PPC_date`FROM `placepeoplecount` JOIN `bill` ON `placepeoplecount`.`Bill_id` = `bill`.`Bill_id` where `placepeoplecount`.`PPC_date` = '".$date."' AND `bill`.`Pla_id` = '".$row_RecPlace["Pla_id"]."'";
+
+
+$RecPPC = mysql_query($query_RecPPC);
+$row_RecPPC=mysql_fetch_assoc($RecPPC);
+$left = $row_RecPlace["Pla_people"]-$row_RecPPC["totalNum"];
+			
+				echo "<th align=\"center\"  bgcolor=\"#ECE1E1\"><p></p>".$pdate."</th>";
+				
+			if($left<20){
+				echo "<td align=\"center\"><p>場地剩餘人數：</br><strong><font color=\"red\">".$left."</font></strong></p></th>";
+			}else{
+				echo "<td align=\"center\"><p>場地剩餘人數：</br>".$left."</p></th>";
+			}
+			
+			
+		
+		
+		}
+			echo "</tr>";
+			echo "</table>";
+
+
+                
+?>
+              
+				<form action="" method="get" name="cartform" id="cartform" onSubmit="return checkForm();">
+              <table width="98%" border="0" align="center" cellpadding="2" cellspacing="1">
+                <tr>
+                  <th bgcolor="#ECE1E1"><p>場地名稱</p></th>
+                  <th bgcolor="#ECE1E1"><p>人數</p></th>
+                  <th bgcolor="#ECE1E1"><p>單價</p></th>
+                  <th bgcolor="#ECE1E1"><p>小計</p></th>
+                  </tr>
+                
+                <tr>
+                  <td bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecPlace["Pla_name"];?></p></td>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p>
+                    <input name="qty" type="number" id="qty" value="<?php echo $_GET["qty"];?>" size="1" min="5">
+                    </p></td>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p>$ <?php echo $row_RecPlace["Pla_price"];?></p></td>
+                  <td align="center" bgcolor="#F6F6F6" class="tdbline"><p>$ <?php echo $Totalprice;?></p></td>
+                  </tr>
+                
+                
+                <tr>
+                  <td valign="baseline" bgcolor="#F6F6F6"><p>總計</p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p>&nbsp;</p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p>&nbsp;</p></td>
+                  <td align="center" valign="baseline" bgcolor="#F6F6F6"><p class="redword">$ <?php echo $Totalprice;?> </p></td>
+                  </tr>          
+                </table>
+				<?php 
+				
+				$myArray[]=9999999999;
+				for($i=$timestamp2;$i<=$timestamp1;$i+=(3600*24)){
+			$date=date("Y-m-d",$i);
+			$pdate=date("m/d",$i);
+
+//計算場地當天總人數
+$query_RecPPC = "SELECT sum(`PPC_load`)as totalNum,`PPC_date`FROM `placepeoplecount` JOIN `bill` ON `placepeoplecount`.`Bill_id` = `bill`.`Bill_id` where `placepeoplecount`.`PPC_date` = '".$date."' AND `bill`.`Pla_id` = '".$row_RecPlace["Pla_id"]."'";
+
+
+$RecPPC = mysql_query($query_RecPPC);
+$row_RecPPC=mysql_fetch_assoc($RecPPC);
+$left = $row_RecPlace["Pla_people"]-$row_RecPPC["totalNum"];
+			
+	$myArray[]=$left;			
+				
+		}
+		sort($myArray);
+		$leftt=$myArray[0];
+				?>
+				
+              <hr width="100%" size="1" />
+              <p align="center">
+                <input name="id" type="hidden" id="id" value="<?php echo $row_RecPlace["Pla_id"];?>">
+				<input name="resstardate" type="hidden" id="sdate" value="<?php echo $_GET["resstardate"];?>">
+				<input name="resenddate" type="hidden" id="edate" value="<?php echo $_GET["resenddate"];?>">
+				<input name="left" type="hidden" id="left" value="<?php echo $leftt;?>">
+                <input name="cartaction" type="hidden" id="cartaction" value="update">
+                <input type="submit" name="updatebtn" id="button3" value="更新總計">
+                <input type="button" name="button" id="button6" value="前往結帳" onClick="window.location.href='checkout.php?id=<?php echo $row_RecPlace["Pla_id"];?>&qty=<?php echo $_GET["qty"];?>&resstardate=<?php echo $_GET["resstardate"];?>&resenddate=<?php echo $_GET["resenddate"];?>';">
+                <input type="button" name="backbtn" id="button4" value="回上一頁" onClick="window.history.back();">
+                </p>
+
+              </form>
+			  <script language="javascript">
+function checkForm(){
+	if(document.cartform.qty.value >= (<?php echo $leftt;?>+1)){
+		alert("人數超過容納極限!");
+		document.cartform.qty.focus();
+		return false;
+	}
+	
+}
+</script>
+<?php  }}?>
+			  
+            </div>          
+        </td>
+        </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="30" align="center" background="images/album_r2_c1.jpg" class="trademark">© 2014 Funnewplay All Rights Reserved.</td>
+  </tr>
+</table>
+</body>
+</html>

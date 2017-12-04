@@ -1,0 +1,170 @@
+<?php 
+header("Content-Type: text/html; charset=utf-8");
+require_once("ConneMysql.php");
+session_start();
+//預設每頁筆數
+$pageRow_records = 6;
+//預設頁數
+$num_pages = 1;
+//若已經有翻頁，將頁數更新
+if (isset($_GET['page'])) {
+  $num_pages = $_GET['page'];
+}
+//本頁開始記錄筆數 = (頁數-1)*每頁記錄筆數
+$startRow_records = ($num_pages -1) * $pageRow_records;
+//若有分類關鍵字時未加限制顯示筆數的SQL敘述句
+if(isset($_GET["cid"])&&($_GET["cid"]!="")){					
+	$query_RecPlace = "SELECT `place`.`Pla_id`,`place`.`Pla_name`,`place`.`Pla_people`,`place`.`Pla_add`,`photo`.`Photo_id`,`photo`.`Photo_picurl` FROM `place` LEFT JOIN `photo` ON `photo`.`Pla_id`=`place`.`Pla_id` WHERE `photo`.`Facility_id` is null and `place`.`Pla_type`=".$_GET["cid"]." ORDER BY `place`.`Pla_id` DESC";
+//若有搜尋關鍵字時未加限制顯示筆數的SQL敘述句
+}else if(isset($_GET["keyword"])&&($_GET["keyword"]!="")){
+	$query_RecPlace = "SELECT `place`.`Pla_id`,`place`.`Pla_name`,`place`.`Pla_people`,`place`.`Pla_add`,`photo`.`Photo_id`,`photo`.`Photo_picurl` FROM `place`  LEFT JOIN `photo` ON `photo`.`Pla_id`=`place`.`Pla_id` WHERE `photo`.`Facility_id` is null and ( `place`.`Pla_name` LIKE '%".$_GET["keyword"]."%' OR `place`.`Pla_des` LIKE '%".$_GET["keyword"]."%' OR `place`.`Pla_add` LIKE '%".$_GET["keyword"]."%' ) ORDER BY `place`.`Pla_id` DESC";
+//若有人數區間關鍵字時未加限制顯示筆數的SQL敘述句
+}else if(isset($_GET["num1"]) && isset($_GET["num2"]) && ($_GET["num1"]<=$_GET["num2"])){
+	$query_RecPlace = "SELECT `place`.`Pla_id`,`place`.`Pla_name`,`place`.`Pla_people`,`place`.`Pla_add`,`photo`.`Photo_id`,`photo`.`Photo_picurl` FROM `place`  LEFT JOIN `photo` ON `photo`.`Pla_id`=`place`.`Pla_id` WHERE `photo`.`Facility_id` is null and (`place`.`Pla_people` BETWEEN ".$_GET["num1"]." AND ".$_GET["num2"].") ORDER BY `Pla_id` DESC";
+//預設狀況下未加限制顯示筆數的SQL敘述句
+}else{
+	$query_RecPlace = "SELECT `place`.`Pla_id`,`place`.`Pla_name`,`place`.`Pla_people`,`place`.`Pla_add`,`photo`.`Photo_id`,`photo`.`Photo_picurl` FROM `place` LEFT JOIN `photo` ON `photo`.`Pla_id`=`place`.`Pla_id` WHERE `photo`.`Facility_id` is null ORDER BY `place`.`Pla_id` DESC";
+}
+//加上限制顯示筆數的SQL敘述句，由本頁開始記錄筆數開始，每頁顯示預設筆數
+$query_limit_RecPlace = $query_RecPlace." LIMIT ".$startRow_records.", ".$pageRow_records;
+//以加上限制顯示筆數的SQL敘述句查詢資料到 $RecPlace 中
+$RecPlace = mysql_query($query_limit_RecPlace);
+//以未加上限制顯示筆數的SQL敘述句查詢資料到 $all_RecPlace 中
+$all_RecPlace = mysql_query($query_RecPlace);
+//計算總筆數
+$total_records = mysql_num_rows($all_RecPlace);
+//計算總頁數=(總筆數/每頁筆數)後無條件進位。
+$total_pages = ceil($total_records/$pageRow_records);
+//繫結場地目錄資料
+$query_RecCategory =  "SELECT `placetype`.`Pla_type`, `placetype`.`typename`, `placetype`.`typesort`, count(`place`.`Pla_id`) as PlaceNum  FROM `placetype` LEFT JOIN `place` ON `placetype`.`Pla_type` = `place`.`Pla_type` GROUP BY `placetype`.`Pla_type`,`placetype`.`typename`,`placetype`.`typesort` ORDER BY `placetype`.`typesort` ASC";
+$RecCategory = mysql_query($query_RecCategory);
+//計算資料總筆數
+$query_RecTotal = "SELECT count(`Pla_id`)as totalNum FROM `place`";
+
+$RecTotal = mysql_query($query_RecTotal);
+$row_RecTotal=mysql_fetch_assoc($RecTotal);
+
+
+
+//返回 URL 參數
+function keepURL(){
+	$keepURL = "";
+	if(isset($_GET["keyword"])) $keepURL.="&keyword=".urlencode($_GET["keyword"]);
+	if(isset($_GET["num1"])) $keepURL.="&num1=".$_GET["num1"];
+	if(isset($_GET["num2"])) $keepURL.="&num2=".$_GET["num2"];	
+	if(isset($_GET["cid"])) $keepURL.="&cid=".$_GET["cid"];
+	return $keepURL;
+}
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Funnewplay//fun新玩</title>
+<link href="stylecart.css" rel="stylesheet" type="text/css">
+</head>
+<body>  
+<table width="850" border="0" align="center" cellpadding="4" cellspacing="0" bgcolor="#FFFFFF">
+  
+  <tr>
+    <td class="tdbline" background="">
+    <a href="../phpmember/index.php"><img src="images/logo1.jpg" alt="場地一覽" width="301" height="168"><h4>Even can not legendary life, just leave memories</h4>
+    <div id="header">
+	    <div id="menubar">
+          <ul id="menu">
+		  <?php if(!isset($_SESSION["loginMember"]) || ($_SESSION["loginMember"]=="")){?>
+          <li><a href="../phpmember/index.php">回首頁</li>
+		  <?php }else if(isset($_SESSION["loginMember"]) || ($_SESSION["loginMember"]!="")){?>
+			<li><a href="../phpmember/member_center.php">會員中心</li>
+		  <?php }?>
+            <li><a href="../phpmember/plasearch.php">瀏覽場地</li>
+            <li><a href="../phpmember/Q&A.html">Q&A</li>
+            <li><a href="../phpmember/contact.html">ABOUT US 關於我們</li>
+          </ul>
+        </div><!--close menubar-->
+      </div><!--close header--> 
+	</td>
+  </tr>
+  <tr>
+    <td class="tdbline"><table width="100%" border="0" cellspacing="0" cellpadding="10">
+        <tr valign="top">
+          <td width="200" class="tdrline">
+            <div class="categorybox">
+              <p class="heading"><img src="images/16-cube-orange.png" width="16" height="16" align="absmiddle"> 場地搜尋 <span class="smalltext">Search</span></p>
+              <form name="form1" method="get" action="plasearch.php">
+                <p>
+                  <input name="keyword" type="text" id="keyword" value="請輸入關鍵字" size="12" onClick="this.value='';">
+                  <input type="submit" id="button" value="查詢">
+                </p>
+              </form>
+              <p class="heading"><img src="images/16-cube-orange.png" width="16" height="16" align="absmiddle"> 人數區間 <span class="smalltext">Number</span></p>
+              <form action="plasearch.php" method="get" name="form2" id="form2">
+                <p>
+                  <input name="num1" type="text" id="num1" value="0" size="3">人
+                  -
+                  <input name="num2" type="text" id="num2" value="0" size="3">人
+                  <input type="submit" id="button2" value="查詢">
+                </p>
+              </form>
+            </div>
+            
+            <hr width="100%" size="1" />
+            
+            <div class="categorybox">
+              <p class="heading"><img src="images/16-cube-orange.png" width="16" height="16" align="absmiddle"> 地區分類 <span class="smalltext">Category</span></p>
+              <ul>
+                <li><a href="plasearch.php">所有地區 <span class="categorycount">(<?php echo $row_RecTotal["totalNum"];?>)</span></a></li>
+                <?php	while($row_RecCategory=mysql_fetch_assoc($RecCategory)){ ?>
+                <li><a href="plasearch.php?cid=<?php echo $row_RecCategory["Pla_type"];?>"><?php echo $row_RecCategory["typename"];?> <span class="categorycount">(<?php echo $row_RecCategory["PlaceNum"];?>)</span></a></li>
+                <?php }?>
+              </ul>
+            </div>
+            </td>
+          <td><div class="subjectDiv"> <span class="heading"><img src="images/16-cube-green.png" width="16" height="16" align="absmiddle"></span> 場地列表</div>
+            
+            <?php	while($row_RecPlace=mysql_fetch_assoc($RecPlace)){ ?>
+            <div class="albumDiv">
+               <div class="picDiv"><a href="placeinfo.php?id=<?php echo $row_RecPlace["Pla_id"];?>">
+                <?php if($row_RecPlace["Photo_picurl"]==""){?>
+                <img src="images/nopic.png" alt="暫無圖片" width="120" height="120" border="0" />
+                <?php }else{?>
+                <img src="photos/<?php echo $row_RecPlace["Photo_picurl"];?>" alt="<?php echo $row_RecPlace["Pla_name"];?>" width="135" height="135" border="0" />
+                <?php }?>
+                </a></div>
+              <div class="albuminfo">
+                <a href="placeinfo.php?id=<?php echo $row_RecPlace["Pla_id"];?>"><?php echo $row_RecPlace["Pla_name"];?></a><br />
+                  <span class="smalltext">可容納 </span><span class="redword"><?php echo $row_RecPlace["Pla_people"];?></span><span class="smalltext"> 人</span></br>               
+               
+              </div>
+            </div>
+            <?php }?>
+            <div class="navDiv">
+              <?php if ($num_pages > 1) { // 若不是第一頁則顯示 ?>
+              <a href="?page=1<?php echo keepURL();?>">|&lt;</a> <a href="?page=<?php echo $num_pages-1;?><?php echo keepURL();?>">&lt;&lt;</a>
+              <?php }else{?>
+              |&lt; &lt;&lt;
+              <?php }?>
+              <?php
+  	  for($i=1;$i<=$total_pages;$i++){
+  	  	  if($i==$num_pages){
+  	  	  	  echo $i." ";
+  	  	  }else{
+  	  	      $urlstr = keepURL();
+  	  	      echo "<a href=\"?page=$i$urlstr\">$i</a> ";
+  	  	  }
+  	  }
+  	  ?>
+              <?php if ($num_pages < $total_pages) { // 若不是最後一頁則顯示 ?>
+              <a href="?page=<?php echo $num_pages+1;?><?php echo keepURL();?>">&gt;&gt;</a> <a href="?page=<?php echo $total_pages;?><?php echo keepURL();?>">&gt;|</a>
+              <?php }else{?>
+              &gt;&gt; &gt;|
+              <?php }?>
+            </div></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td height="30" align="center" background="images/album_r2_c1.jpg" class="trademark">© 2014 Funnewplay All Rights Reserved.</td>
+  </tr>
+</table>
+</body>
+</html>

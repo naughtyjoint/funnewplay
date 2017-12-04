@@ -1,0 +1,84 @@
+<?php 
+header("Content-Type: text/html; charset=utf-8");
+require_once("ConneMysql.php");
+session_start();
+//檢查是否經過登入
+if(!isset($_SESSION["loginMember"]) || ($_SESSION["loginMember"]=="")){
+	header("Location: index.html");
+}
+
+if(($_SESSION["membertype"]==3)){
+	header("Location: admin_center.php");
+}
+//執行登出動作
+if(isset($_GET["logout"]) && ($_GET["logout"]=="true")){
+	unset($_SESSION["loginMember"]);
+	header("Location: index.php");
+}
+//繫結登入會員資料
+$query_RecMember = "SELECT * FROM `member` WHERE `Mem_email`='".$_SESSION["loginMember"]."'";
+$RecMember = mysql_query($query_RecMember);	
+$row_RecMember=mysql_fetch_assoc($RecMember);
+
+//繫結訊息資料
+$query_RecNote = "SELECT * FROM `note` WHERE `ToMem_id` = ".$row_RecMember["Mem_id"]." AND `Note_read` = 'unread'";
+$RecNote = mysql_query($query_RecNote);
+
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Funnewplay//fun新玩 ─ 會員中心</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<?php if(isset($_GET["billcreat"]) && ($_GET["billcreat"]=="1")){?>
+<div style="color:yellow; background:red; font-weight:bold; text-align:center">
+    場地預定完成！
+</div>
+<?php }?>
+<table width="780" border="0" align="center" cellpadding="4" cellspacing="0">
+  <tr>
+    <td class="tdbline"><a href="index.html"><img src="images/logo1.png" alt="場地資訊" width="301" height="168"><h4>Even can not legendary life, just leave memories</h4><div id="menubar">
+          <ul id="menu">
+          <li><a href="index.html">回首頁</li>
+            <li><a href="plasearch.php">瀏覽場地</li>
+            <li><a href="Q&A.html">Q&A</li>
+            <li><a href="contact.html">ABOUT US 關於我們</li>
+          </ul>
+        </div><!--close menubar--></td>
+	
+  </tr>
+  
+	    
+       
+  <tr>
+    <td class="tdbline"><table width="100%" border="0" cellspacing="0" cellpadding="10">
+      <tr valign="top">
+        <td class="tdrline"><p class="title">fun新玩會員中心</p>
+          <?php if($_SESSION["membertype"]=="1"){?>
+		  <li><h1><a href="checkbill.php"><font face="微軟正黑體">訂單查詢</font></a></h1></li>
+              <?php }else{?>
+		  <li><h1><a href="billman.php"><font face="微軟正黑體">訂單管理</font></a></h1></li>
+          <li><h1><a href="placeman.php"><font face="微軟正黑體">現有場地管理</font></a></h1></li>
+		  <li><h1><a href="statistic.php"><font face="微軟正黑體">統計資料</font></a></h1></li>
+            <?php }?>
+		  <li><h1><a href="noteman.php"><font face="微軟正黑體">訊息管理(未讀：<?php echo mysql_num_rows($RecNote); ?>)</font></a></h1></li>
+          </td>
+        <td width="200"><div class="regbox">
+          <p class="heading"><strong>會員系統</strong></p>
+          
+            <p><strong><?php echo $row_RecMember["Mem_name"];?></strong> 您好。</p>
+            
+            <p align="center"><a href="member_update.php">修改資料</a> | <a href="?logout=true">登出系統</a></p>
+</div></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td align="center" background="images/album_r2_c1.jpg" class="trademark">© 2014 Funnewplay All Rights Reserved.</td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,6 @@
+[15-Jul-2015 00:42:48 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\faupdate.php on line 25
+[15-Jul-2015 00:42:48 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\faupdate.php on line 33
+[15-Jul-2015 00:42:48 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\faupdate.php on line 121
+[15-Jul-2015 00:42:56 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\faupdate.php on line 25
+[15-Jul-2015 00:42:56 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\faupdate.php on line 33
+[15-Jul-2015 00:42:56 Asia/Taipei] PHP Warning:  mysql_fetch_assoc() expects parameter 1 to be resource, boolean given in C:\Users\apple\Desktop\TWAMPd\htdocs\funnewplay\faupdate.php on line 121

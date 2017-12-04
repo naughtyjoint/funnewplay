@@ -1,0 +1,206 @@
+<?php 
+header("Content-Type: text/html; charset=utf-8");
+require_once("ConneMysql.php");
+require_once("wfcartqq.php");
+require_once("wfcartqq2.php");
+session_start();
+
+if(!isset($_SESSION["loginMember"]) || ($_SESSION["loginMember"]=="")){
+	header("Location: index.php");
+}
+
+//繫結登入會員資料
+$query_RecMember = "SELECT * FROM `member` WHERE `Mem_email`='".$_SESSION["loginMember"]."'";
+$RecMember = mysql_query($query_RecMember);	
+$row_RecMember = mysql_fetch_assoc($RecMember);
+//---------------------------------------------------------------------------------------------------------------
+
+
+
+//繫結訂單資料
+$query_RecBill = "SELECT * FROM `bill` WHERE `Bill_id` = ".$_SESSION["billid"];
+$RecBill = mysql_query($query_RecBill);
+$row_RecBill = mysql_fetch_assoc($RecBill);
+//---------------------------------------------------------------------------------------------------------------
+
+//繫結場地資料
+$query_RecPlace = "SELECT * FROM `place` WHERE `Pla_id`=".$row_RecBill["Pla_id"];
+$RecPlace = mysql_query($query_RecPlace);
+$row_RecPlace=mysql_fetch_assoc($RecPlace);
+//---------------------------------------------------------------------------------------------------------------
+
+
+//繫結訂單細節
+$query_RecBillde = "SELECT * FROM `billdetail` WHERE `Bill_id` = ".$_SESSION["billid"];
+$RecBillde = mysql_query($query_RecBillde);
+$row_RecBillde = mysql_fetch_assoc($RecBillde);
+
+
+sscanf($row_RecBillde["Act_start"], "%d-%d-%d %d:%d:%d", $y, $m, $d, $h, $i, $s);
+$timestamp1 = mktime($h, $i, $s, $m, $d, $y);
+sscanf($row_RecBillde["Act_end"], "%d-%d-%d %d:%d:%d", $y, $m, $d, $h, $i, $s);
+$timestamp2 = mktime($h, $i, $s, $m, $d, $y);
+
+
+
+$cart =& $_SESSION['cartqq']; // 將購物車的值設定為 Session
+if(!is_object($cart))
+ $cart = new wfCart();
+ 
+$cartt =& $_SESSION['cartt']; // 將購物車的值設定為 Session
+if(!is_object($cartt)) $cartt = new wfcartt();
+
+$cart_rain =& $_SESSION['cartrain']; // 將購物車的值設定為 Session
+if(!is_object($cart_rain)) $cart_rain = new wfcartt();
+
+ //---------------------------------------------------------------------------------------------------------------
+ 
+
+//繫結設施資料
+$query_myFacility = "SELECT * FROM `facility` LEFT JOIN `place` ON `facility`.`Pla_id`=`place`.`Pla_id` WHERE `place`.`Pla_id`=".$row_RecBill["Pla_id"]."";
+$myFacility = mysql_query($query_myFacility);
+$row_myFacility=mysql_fetch_assoc($myFacility);
+//繫結設備資料
+$query_mydevice = "SELECT * FROM `device` LEFT JOIN `place` ON `device`.`Pla_id`=`place`.`Pla_id` WHERE `place`.`Pla_id`=".$row_RecBill["Pla_id"]."";
+$mydevice = mysql_query($query_mydevice);
+$row_mydevice=mysql_fetch_assoc($mydevice);
+//繫結提供資料
+$query_myProvide = "SELECT * FROM `provide` LEFT JOIN `place` ON `provide`.`Pla_id`=`place`.`Pla_id` WHERE `place`.`Pla_id`=".$row_RecBill["Pla_id"]."";
+$myProvide = mysql_query($query_myProvide);
+$row_myProvide=mysql_fetch_assoc($myProvide);
+//繫結產品目錄資料
+$query_myCategory = "SELECT `place`.`Pla_id`,`facility`.`Facility_id`, count(`facility`.`Facility_id`) as productNum  
+FROM `facility` 
+LEFT JOIN `place` on `facility`.`Pla_id` =`place`.`Pla_id` 
+LEFT JOIN `placetype` on `place`.`Pla_type`=`placetype`.`Pla_type` 
+WHERE `place`.`Pla_id`=".$row_RecBill["Pla_id"]."";
+$myCategory = mysql_query($query_myCategory);
+//----2
+$query_myCategory2 = "SELECT `place`.`Pla_id`,`device`.`Device_id`, count(`device`.`Device_id`) as productNum  
+FROM `device` 
+LEFT JOIN `place` on `device`.`Pla_id` =`place`.`Pla_id` 
+LEFT JOIN `placetype` on `place`.`Pla_type`=`placetype`.`Pla_type` 
+WHERE `place`.`Pla_id`=".$row_RecBill["Pla_id"]."";
+$myCategory2 = mysql_query($query_myCategory2);
+//----3
+$query_myCategory3 = "SELECT `place`.`Pla_id`,`provide`.`Provide_id`, count(`provide`.`Provide_id`) as productNum  
+FROM `provide` 
+LEFT JOIN `place` on `provide`.`Pla_id` =`place`.`Pla_id` 
+LEFT JOIN `placetype` on `place`.`Pla_type`=`placetype`.`Pla_type` 
+WHERE `place`.`Pla_id`=".$row_RecBill["Pla_id"]."";
+$myCategory3 = mysql_query($query_myCategory3);
+
+if($row_RecBill["CheckYN"]=='1'){
+	header("Location: bill.php?id=".$_SESSION["billid"]);
+}
+
+if($row_RecBill["Mem_id"] != $row_RecMember["Mem_id"]){
+	header("Location: member_center.php");
+}
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Funnewplay//fun新玩 ─ 結帳確認</title>
+<link href="stylecart.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<table width="780" border="0" align="center" cellpadding="4" cellspacing="0" bgcolor="#FFFFFF">
+  <tr>
+    <td>
+    <a href="index.php"><img src="images/logo1.png" alt="回首頁" width="301" height="168">
+	</td>
+  </tr>
+  <tr>
+    <td class="tdbline"><table width="100%" border="0" cellspacing="0" cellpadding="10">
+      <tr valign="top">
+        <td><div class="subjectDiv"> <span class="heading"><img src="images/16-cube-green.png" width="16" height="16" align="absmiddle"></span>設施設備選擇</div>
+          
+          
+		  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+              <tr>
+                <th width="117" bgcolor="#0000CC"><p><font color="white">編號</font></p></th>
+                <th width="171" bgcolor="#0000CC"><p><font color="white">場地</font></p></th>
+				<th width="201" bgcolor="#0000CC"><p><font color="white">下單日期</font></p></th>
+				<th colspan="2" bgcolor="#0000CC"><p><font color="white">場勘日期</font></p></th>
+				</tr>
+			  
+			  <tr>
+				<td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Bill_id"];?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecPlace["Pla_name"];?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Bill_date"];?></p></td>
+                <td colspan="2" align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Bill_sdate"];?></p></td>
+                </tr>
+			  
+			  <tr>
+				<th bgcolor="#0000CC"><p><font color="white">客戶名稱</font></p></th>
+                <th bgcolor="#0000CC"><p><font color="white">客戶聯絡人</font></p></th>
+				<th bgcolor="#0000CC"><p><font color="white">聯絡人Email</font></p></th>
+				<th width="124" bgcolor="#0000CC"><p><font color="white">聯絡電話(主要)</font></p></th>
+				<th width="101" bgcolor="#0000CC"><p><font color="white">聯絡電話(備用)</font></p></th>
+			  </tr>
+        
+              <tr>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Cl_name"];?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Cl_charge"];?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Cl_email"];?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Cl_tel"];?></p></td>    
+				<td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBill["Cl_cel"];?></p></td>  	
+			  </tr>
+			  
+			  <tr>
+				<th bgcolor="#0000CC" colspan="3"><p><font color="white">活動日期</font></p></th>               
+				<th bgcolor="#0000CC"><p><font color="white">活動天數</font></p></th>
+				<th bgcolor="#0000CC"><p><font color="white">預定人數</font></p></th>
+			  </tr>
+			  
+			  <tr>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline" colspan="3"><p><?php echo (date("Y-m-d",$timestamp1));?> ~ <?php echo (date("Y-m-d",$timestamp2));?></p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBillde["Act_daycount"];?>天</p></td>
+                <td align="center" bgcolor="#F6F6F6" class="tdbline"><p><?php echo $row_RecBillde["Act_reservepeople"];?>人</p></td>                     	
+			  </tr>
+			  
+			  <tr>
+				<th bgcolor="#0000CC" colspan="5"><p><font color="white">訂單價格</font></p></th>
+				</tr>
+				
+              
+              <tr>
+                <td valign="baseline" bgcolor="#F6F6F6" colspan="4"><p>訂金  </p></td>
+                <td align="center" valign="baseline" bgcolor="#F6F6F6"><p class="redword">$<?php echo $row_RecBill["Bill_price"];?> </p></td>
+              </tr>          
+            </table>
+		  
+          <div class="dataDiv">
+          
+             <a href="falist.php?pid=<?php echo $row_RecBill["Pla_id"];?>">設施排程<span class="categorycount"></span></a>
+			 <a href="falistrain.php?pid=<?php echo $row_RecBill["Pla_id"];?>">下雨天場地排程備案
+               <?php	while($row_myCategory2=mysql_fetch_assoc($myCategory2)){ ?>
+             <a href="delist.php?pid=<?php echo $row_RecBill["Pla_id"];?>">設備<span class="categorycount">(<?php echo $row_myCategory2["productNum"];?>)</span></a>
+              <?php }?> 
+              <?php	while($row_myCategory3=mysql_fetch_assoc($myCategory3)){ ?>
+             <a href="prolist.php?pid=<?php echo $row_RecBill["Pla_id"];?>">提供<span class="categorycount">(<?php echo $row_myCategory3["productNum"];?>)</span></a>
+              <?php }?> 
+			  
+            
+            <hr width="100%" size="1" />
+             
+            <form name="form3" method="post" action="checkcheckout.php">
+              <input name="id" type="hidden" id="id" value="<?php echo $row_RecPlace["Pla_id"];?>">
+              <input name="name" type="hidden" id="name" value="<?php echo $row_RecPlace["Pla_name"];?>">
+              <input name="qty" type="hidden" id="qty" value="1">
+              <input name="cartaction" type="hidden" id="cartaction" value="add">
+			  <input type="submit" name="button3" id="button3" value="瀏覽結帳單">
+              <input type="button" name="button4" id="button4" value="回上一頁" onClick="location.href='bill.php?id=<?php echo $row_RecBill["Bill_id"];?>'">
+            </form>
+          </div></td>
+        </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="30" align="center" background="images/album_r2_c1.jpg" class="trademark">© 2014 FunNewPlay All Rights Reserved.</td>
+  </tr>
+</table>
+</body>
+</html>

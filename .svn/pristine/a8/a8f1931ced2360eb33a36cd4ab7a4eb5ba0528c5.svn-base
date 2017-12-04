@@ -1,0 +1,152 @@
+<?php 
+header("Content-Type: text/html; charset=utf-8");
+require_once("ConneMysql.php");
+session_start();
+if(isset($_GET["action"])&&($_GET["action"]=="hits")){		
+	header("Location: onephoto.php?id=".$_GET["id"]);
+}
+//繫結登入會員資料
+$query_RecMember = "SELECT * FROM `member` WHERE `Mem_email`='".$_SESSION["loginMember"]."'";
+$RecMember = mysql_query($query_RecMember);	
+$row_RecMember = mysql_fetch_assoc($RecMember);
+//繫結設備資料
+$query_RecPlace = "SELECT * FROM `device` LEFT JOIN `photo` ON `photo`.`Device_id`=`device`.`Device_id` WHERE `photo`.`Pla_id` is null && `photo`.`Facility_id` is null&&`device`.`Device_id`=".$_GET["id"];
+$RecPlace = mysql_query($query_RecPlace);
+$row_RecPlace=mysql_fetch_assoc($RecPlace);
+//繫結場地目錄資料
+$query_RecCategory =   "SELECT `placetype`.`Pla_type`, `placetype`.`typename`, `placetype`.`typesort`, count(`device`.`Device_id`) as DeviceNum  FROM `placetype` LEFT JOIN `device` ON `placetype`.`Pla_type` = `device`.`Pla_type` GROUP BY `placetype`.`Pla_type`,`placetype`.`typename`,`placetype`.`typesort` ORDER BY `placetype`.`typesort` ASC";
+$RecCategory = mysql_query($query_RecCategory);
+//計算資料總筆數
+$query_RecTotal = "SELECT count(`Device_id`)as totalNum FROM `device` where `Pla_id` is null ";
+$RecTotal = mysql_query($query_RecTotal);
+$row_RecTotal=mysql_fetch_assoc($RecTotal);
+
+//---------------------------------------------------------------
+/*預設每頁筆數
+$pageRow_records = 6;
+//預設頁數
+$num_pages = 1;
+//若已經有翻頁，將頁數更新
+if (isset($_GET['page'])) {
+  $num_pages = $_GET['page'];
+}
+
+//本頁開始記錄筆數 = (頁數-1)*每頁記錄筆數
+$startRow_records = ($num_pages -1) * $pageRow_records;
+//繫結產品資料
+
+//加上限制顯示筆數的SQL敘述句，由本頁開始記錄筆數開始，每頁顯示預設筆數
+$query_limit_myFacility = $query_myFacility." LIMIT ".$startRow_records.", ".$pageRow_records;
+//以加上限制顯示筆數的SQL敘述句查詢資料到 $RecProduct 中
+$myFacility = mysql_query($query_limit_myFacility);
+//以未加上限制顯示筆數的SQL敘述句查詢資料到 $all_RecProduct 中
+$all_myFacility = mysql_query($query_myFacility);
+//計算總筆數
+$total_records = mysql_num_rows($all_myFacility);
+//計算總頁數=(總筆數/每頁筆數)後無條件進位。
+$total_pages = ceil($total_records/$pageRow_records);*/
+
+function keepURL(){
+	$keepURL = "";
+	if(isset($_GET["id"])) $keepURL.="&id=".$_GET["id"];
+	return $keepURL;
+}
+
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Funnewplay//fun新玩 ─ 場地資訊</title>
+<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+	<script type="text/javascript" src="javascript/angular.min.js"></script>
+	<script type="text/javascript" src="javascript/app.js"></script>
+	<script type="text/javascript" src="javascript/jquery-2.1.3.min.js"></script>
+	<script>
+	$(function(){
+      $('#target').click(function() {
+          //$(this).val("");  
+          $('input[name="target"]').val("");
+      });
+    });
+	</script>
+</head>
+<body ng-app="funNewPlay" ng-controller="funNewPlayPlaceinfo">
+<nav class="mainnav">
+		<div class="container">
+			<div class="mainnav_left">
+				<a href="index.php"><img src="images/logo1.png" style="width:150px"></a>
+				<input id="target" name="target" type="text" class="mainnav_search_input" value="尋 找 場 地...">
+				<a href="#"><img src="images/search.png" width="39" height="34"></a>
+			</div>
+		  <div class="mainnav_right">
+				<a href="#"><img src="images/head.png" width="59" height="54"></a> 
+				<a href="#"><img src="images/name.png"></a>
+				<a href="#"><img src="images/cart.png" width="39" height="44"></a>
+			</div>
+		</div>
+</nav>
+<div class="container">
+<h4><b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您的位置：</b></h4>
+<p>&nbsp;</p>
+
+<div class="maincontainerplaceinfo">
+			<div class="maincontainerplaceinfo_banners">
+            
+            <?php if($row_RecPlace["Photo_picurl"]==""){?>
+              <img src="images/nopic.png" alt="暫無圖片"  />
+              <?php }else{?>
+              <a href="?action=hits&id=<?php echo $row_RecPlace["Photo_id"];?>"><img src="photos/<?php echo $row_RecPlace["Photo_picurl"];?>" alt="<?php echo $row_RecPlace["Device_name"];?>" width="1100" height="650" /></a>
+              <?php }?>
+              
+			</div>
+            
+            
+
+            
+            <span class="smalltext">目前數量 </span><span class="redword"><?php echo $row_RecPlace["Device_id"];?></span><span class="smalltext"> </span>            
+          
+          
+            <?php echo $row_RecPlace["Device_name"];?>
+          
+          
+			
+			<p>租借價格：<?php echo nl2br($row_RecPlace["Device_price"]);?></p>
+            
+            <p>場地簡介：</br><?php echo nl2br($row_RecPlace["Device_des"]);?></p>		
+           
+            <hr width="100%" size="1" />
+           
+            <form class="center" name="form3" method="post" action="placeupdate.php?p_id=<?php echo $row_RecPlace["Pla_id"];?>">
+              <input name="id" type="hidden" id="id" value="<?php echo $row_RecPlace["Pla_id"];?>">
+              <input name="name" type="hidden" id="name" value="<?php echo $row_RecPlace["Pla_name"];?>">
+			  <input name="qty" type="hidden" id="qty" value="0">
+			
+              <input  type="button" name="button4" id="button4" value="回上一頁" onClick="window.history.back();">
+            </form>
+          
+		  
+		  
+
+  </div>
+</div>
+
+
+              
+    
+    
+
+
+<footer class="footer">
+  <div class="container">
+    <ul class="footer_anchors">
+      <li><a href="">網站教學</a></li>
+      <li><a href="">聯絡我們</a></li>
+      <li><a href="contact.html">關於我們</a></li>
+      <li class="right">copyright 2015</li>
+    </ul>
+  </div>
+</footer>
+</body>
+</html>
